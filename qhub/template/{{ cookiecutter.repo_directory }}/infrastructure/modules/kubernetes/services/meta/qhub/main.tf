@@ -253,6 +253,43 @@ resource "kubernetes_manifest" "dask-gateway" {
   }
 }
 
+resource "kubernetes_manifest" "kubecost" {
+  provider = kubernetes-alpha
+
+  manifest = {
+    apiVersion = "traefik.containo.us/v1alpha1"
+    kind       = "IngressRoute"
+    metadata = {
+      name      = "kubecost"
+      namespace = var.namespace
+    }
+    spec = {
+      entryPoints = ["websecure"]
+      routes = [
+        {
+          kind  = "Rule"
+          match = "Host(`${var.external-url}`) && PathPrefix(`/kubecost/`)"
+
+          middlewares = [
+            {
+              name      = "qhub-kubecost-middleware"
+              namespace = var.namespace
+            }
+          ]
+
+          services = [
+            {
+              name = "service-kubecost"
+              port = 9090
+            }
+          ]
+        }
+      ]
+      tls = local.tls
+    }
+  }
+}
+
 resource "kubernetes_manifest" "jupyterhub-ssh-ingress" {
   provider = kubernetes-alpha
 
@@ -306,4 +343,10 @@ resource "kubernetes_manifest" "jupyterhub-sftp-ingress" {
       ]
     }
   }
+}
+
+module "kubernetes-kubecost" {
+  source = "../../kubecost"
+
+  namespace = var.namespace
 }
