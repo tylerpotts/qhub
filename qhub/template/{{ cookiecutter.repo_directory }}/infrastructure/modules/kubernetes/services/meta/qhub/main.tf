@@ -261,7 +261,7 @@ resource "kubernetes_manifest" "kubecost" {
     kind       = "IngressRoute"
     metadata = {
       name      = "kubecost"
-      namespace = var.namespace
+      namespace = "${var.namespace}-kubecost"
     }
     spec = {
       entryPoints = ["websecure"]
@@ -273,13 +273,13 @@ resource "kubernetes_manifest" "kubecost" {
           middlewares = [
             {
               name      = "qhub-kubecost-middleware"
-              namespace = var.namespace
+              namespace = "${var.namespace}-kubecost"
             }
           ]
 
           services = [
             {
-              name = "service-kubecost"
+              name = "kubecost-cost-analyzer"
               port = 9090
             }
           ]

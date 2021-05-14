@@ -173,11 +173,11 @@ resource "kubernetes_deployment" "main" {
             "--ping=true",
             # Start the Traefik Kubernetes Ingress Controller
             "--providers.kubernetesingress",
-            "--providers.kubernetesingress.namespaces=${var.namespace}",
+            "--providers.kubernetesingress.namespaces=${var.namespace},${var.namespace}-kubecost",
             "--providers.kubernetesingress.ingressclass=traefik",
             # Start the Traefik Kubernetes CRD Controller Provider
             "--providers.kubernetescrd",
-            "--providers.kubernetescrd.namespaces=${var.namespace}",
+            "--providers.kubernetescrd.namespaces=${var.namespace},${var.namespace}-kubecost",
             "--providers.kubernetescrd.throttleduration=2s",
             "--providers.kubernetescrd.allowcrossnamespace=false",
             # Define two entrypoint ports, and setup a redirect from HTTP to HTTPS.

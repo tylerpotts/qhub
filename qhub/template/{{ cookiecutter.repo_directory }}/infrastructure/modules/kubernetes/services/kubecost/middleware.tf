@@ -1,4 +1,4 @@
-resource "kubernetes_manifest" "gateway-middleware" {
+resource "kubernetes_manifest" "kubecost-middleware" {
   provider = kubernetes-alpha
 
   manifest = {
@@ -6,11 +6,11 @@ resource "kubernetes_manifest" "gateway-middleware" {
     kind       = "Middleware"
     metadata = {
       name      = "qhub-kubecost-middleware"
-      namespace = var.namespace
+      namespace = "${var.namespace}-kubecost"
     }
     spec = {
-      stripPrefix = {
-        prefixes = [
+      stripPrefixRegex = {
+        regex = [
           "/kubecost"
         ]
       }
