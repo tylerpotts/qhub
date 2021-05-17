@@ -1,5 +1,5 @@
 variable "namespace" {
-  description = "Namespace for Kubecost deployment"
+  description = "Namespace of main deployment (kubecost namespace will be derived from this)"
   type        = string
 }
 

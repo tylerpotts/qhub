@@ -272,6 +272,10 @@ resource "kubernetes_manifest" "kubecost" {
 
           middlewares = [
             {
+              name = "traefik-forward-auth"
+              namespace = module.kubernetes-kubecost.namespace
+            },
+            {
               name      = "qhub-kubecost-middleware"
               namespace = module.kubernetes-kubecost.namespace
             }
@@ -350,4 +354,42 @@ module "kubernetes-kubecost" {
 
   # Pass in our root namespace, kubecost will create a derivative namespace
   namespace = var.namespace
+}
+
+
+resource "kubernetes_manifest" "forwardauth" {
+  provider = kubernetes-alpha
+
+  manifest = {
+    apiVersion = "traefik.containo.us/v1alpha1"
+    kind       = "IngressRoute"
+    metadata = {
+      name      = "forwardauth"
+      namespace = var.namespace
+    }
+    spec = {
+      entryPoints = ["websecure"]
+      routes = [
+        {
+          kind  = "Rule"
+          match = "Host(`${var.external-url}`) && PathPrefix(`/forwardauth/_oauth`)"
+
+          middlewares = [
+            {
+              name = "traefik-forward-auth"
+              namespace = var.namespace
+            }
+          ]
+
+          services = [
+            {
+              name = "forwardauth-service"
+              port = 4181
+            }
+          ]
+        }
+      ]
+      tls = local.tls
+    }
+  }
 }

@@ -215,3 +215,8 @@ module "prefect" {
   prefect_token        = var.prefect_token
 }
 {% endif -%}
+
+module "forwardauth" {
+  source = "./modules/kubernetes/forwardauth"
+  namespace            = var.environment
+}
