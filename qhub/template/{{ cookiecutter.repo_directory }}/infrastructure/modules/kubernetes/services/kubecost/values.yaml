@@ -1,0 +1,7 @@
+kubecostProductConfigs:
+  labelMappingConfigs:
+    enabled: true
+    owner_label: "owner"
+    team_label: "team"
+    department_label: "dept"
+    product_label: "product"

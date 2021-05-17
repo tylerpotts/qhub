@@ -20,5 +20,9 @@ resource "helm_release" "kubecost" {
   repository = data.helm_repository.kubecost.metadata[0].name
   chart      = "kubecost/cost-analyzer"
   version    = "1.80.0"
+
+  values = concat([
+    file("${path.module}/values.yaml"),
+  ], var.overrides)
 }
 
