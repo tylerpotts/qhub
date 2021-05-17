@@ -6,7 +6,7 @@ resource "kubernetes_manifest" "kubecost-middleware" {
     kind       = "Middleware"
     metadata = {
       name      = "qhub-kubecost-middleware"
-      namespace = "${var.namespace}-kubecost"
+      namespace = kubernetes_namespace.kubecost.metadata[0].name
     }
     spec = {
       stripPrefixRegex = {

@@ -261,7 +261,7 @@ resource "kubernetes_manifest" "kubecost" {
     kind       = "IngressRoute"
     metadata = {
       name      = "kubecost"
-      namespace = "${var.namespace}-kubecost"
+      namespace = module.kubernetes-kubecost.namespace
     }
     spec = {
       entryPoints = ["websecure"]
@@ -273,7 +273,7 @@ resource "kubernetes_manifest" "kubecost" {
           middlewares = [
             {
               name      = "qhub-kubecost-middleware"
-              namespace = "${var.namespace}-kubecost"
+              namespace = module.kubernetes-kubecost.namespace
             }
           ]
 
@@ -348,5 +348,6 @@ resource "kubernetes_manifest" "jupyterhub-sftp-ingress" {
 module "kubernetes-kubecost" {
   source = "../../kubecost"
 
+  # Pass in our root namespace, kubecost will create a derivative namespace
   namespace = var.namespace
 }
