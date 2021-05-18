@@ -11,6 +11,7 @@ module "kubernetes-jupyterhub" {
 
   overrides = concat(var.jupyterhub-overrides, [
     jsonencode({
+# Start of internal JSON object
       hub = {
         nodeSelector = {
           (var.general-node-group.key) = var.general-node-group.value
@@ -22,6 +23,10 @@ module "kubernetes-jupyterhub" {
           "dask-gateway" = {
             apiToken = random_password.jupyterhub_api_token.result
           }
+        }
+        extraConfig = {
+          # hub.services in z2jh does not currently support more than apiToken -> api_token, we need oauth_client_id and oauth_redirect_uri too
+          forwardauthservice = "c.JupyterHub.services = [{ 'name': 'forwardauth-jupyterhub-service', 'api_token': '${var.forwardauth-jh-client-secret}', 'oauth_client_id': '${var.forwardauth-jh-client-id}', 'oauth_redirect_uri': 'https://${var.external-url}${var.forwardauth-callback-url-path}', }]"
         }
       }
 
@@ -82,7 +87,10 @@ module "kubernetes-jupyterhub" {
             }
           ]
         }
+
       }
+
+# End of internal JSON object
     })
   ])
 }
@@ -372,7 +380,7 @@ resource "kubernetes_manifest" "forwardauth" {
       routes = [
         {
           kind  = "Rule"
-          match = "Host(`${var.external-url}`) && PathPrefix(`/forwardauth/_oauth`)"
+          match = "Host(`${var.external-url}`) && PathPrefix(`${var.forwardauth-callback-url-path}`)"
 
           middlewares = [
             {

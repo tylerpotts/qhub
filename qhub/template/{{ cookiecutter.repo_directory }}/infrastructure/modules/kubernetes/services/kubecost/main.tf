@@ -21,6 +21,11 @@ resource "helm_release" "kubecost" {
   chart      = "kubecost/cost-analyzer"
   version    = "1.80.0"
 
+  set {
+    name  = "kubecostToken"
+    value = "ZGxlc3RlckBxdWFuc2lnaHQuY29txm343yadf98"
+  }
+
   values = concat([
     file("${path.module}/values.yaml"),
   ], var.overrides)

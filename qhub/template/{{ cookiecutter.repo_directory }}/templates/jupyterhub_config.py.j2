@@ -152,6 +152,9 @@ def qhub_configure_profile(username, safe_username, profile):
         'owner': k8s_safe_username,
         'team': user['primary_group']
     }
+    profile['kubespawner_override']['extra_annotations'] = {
+        'dept': k8s_safe_username  # Just to test Kubecost annotations for now
+    }
     return profile
 
 def qhub_list_available_profiles(username):
@@ -242,3 +245,4 @@ c.{{ cookiecutter.security.authentication.authentication_class.split('.')[-1] }}
 {% endfor %}
 
 {% endif %}
+

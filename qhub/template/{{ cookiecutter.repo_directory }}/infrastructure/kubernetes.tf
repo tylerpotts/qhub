@@ -198,6 +198,10 @@ module "qhub" {
 
   dask_gateway_extra_config = file("dask_gateway_config.py.j2")
 
+  forwardauth-jh-client-id = local.forwardauth-jh-client-id
+  forwardauth-jh-client-secret = random_password.forwardauth-jhsecret.result
+  forwardauth-callback-url-path = local.forwardauth-callback-url-path
+
   depends_on = [
     module.kubernetes-ingress
   ]
@@ -216,7 +220,17 @@ module "prefect" {
 }
 {% endif -%}
 
+resource "random_password" "forwardauth-jhsecret" {
+  length  = 32
+  special = false
+}
+
 module "forwardauth" {
-  source = "./modules/kubernetes/forwardauth"
-  namespace            = var.environment
+  source       = "./modules/kubernetes/forwardauth"
+  namespace    = var.environment
+  external-url = var.endpoint
+
+  jh-client-id = local.forwardauth-jh-client-id
+  jh-client-secret = random_password.forwardauth-jhsecret.result
+  callback-url-path = local.forwardauth-callback-url-path
 }
