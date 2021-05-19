@@ -57,11 +57,14 @@ resource "kubernetes_deployment" "forwardauth-deployment" {
           env {
             name = "PROVIDERS_GENERIC_OAUTH_TOKEN_URL"
             value = "https://${var.external-url}/hub/api/oauth2/token"
+            # Would prefer to call the internal version here (http://proxy-public) but get an http/https mismatch
+            # similar to the reason this fix was put in: https://github.com/jupyterhub/jupyterhub/pull/3219
           }
 
           env {
             name = "PROVIDERS_GENERIC_OAUTH_USER_URL"
             value = "https://${var.external-url}/hub/api/user"
+            # This should also be internal
           }
 
           env {

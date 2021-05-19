@@ -11,7 +11,6 @@ module "kubernetes-jupyterhub" {
 
   overrides = concat(var.jupyterhub-overrides, [
     jsonencode({
-# Start of internal JSON object
       hub = {
         nodeSelector = {
           (var.general-node-group.key) = var.general-node-group.value
@@ -24,9 +23,9 @@ module "kubernetes-jupyterhub" {
             apiToken = random_password.jupyterhub_api_token.result
           }
         }
+
         extraConfig = {
-          # hub.services in z2jh does not currently support more than apiToken -> api_token, we need oauth_client_id and oauth_redirect_uri too
-          forwardauthservice = "c.JupyterHub.services = [{ 'name': 'forwardauth-jupyterhub-service', 'api_token': '${var.forwardauth-jh-client-secret}', 'oauth_client_id': '${var.forwardauth-jh-client-id}', 'oauth_redirect_uri': 'https://${var.external-url}${var.forwardauth-callback-url-path}', }]"
+          forwardauthservice = "c.JupyterHub.services += [{ 'name': 'forwardauth-jupyterhub-service', 'api_token': '${var.forwardauth-jh-client-secret}', 'oauth_client_id': '${var.forwardauth-jh-client-id}', 'oauth_redirect_uri': 'https://${var.external-url}${var.forwardauth-callback-url-path}', }]"
         }
       }
 
@@ -90,9 +89,14 @@ module "kubernetes-jupyterhub" {
 
       }
 
-# End of internal JSON object
     })
   ])
+
+  # hub.services in z2jh does not currently support more than apiToken -> api_token, 
+  # but we need oauth_client_id and oauth_redirect_uri too for forwardauth,
+  # so that is in an extraConfig block above.
+  # Using += seems to work but ultimately relies on z2jh parsing services.dask-gateway 
+  # before forwardauthservice.extraConfig
 }
 
 
