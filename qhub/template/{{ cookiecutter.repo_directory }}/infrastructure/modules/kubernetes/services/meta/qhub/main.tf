@@ -3,6 +3,12 @@ resource "random_password" "jupyterhub_api_token" {
   special = false
 }
 
+module "kubernetes-nfsuserinfo" {
+  source = "../../nfsuserinfo"
+
+  namespace = var.namespace
+}
+
 
 module "kubernetes-jupyterhub" {
   source = "../../jupyterhub"

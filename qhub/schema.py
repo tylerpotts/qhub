@@ -145,14 +145,14 @@ class Authentication(Base):
 
 
 class User(Base):
-    uid: str
+    uid: typing.Optional[str]
     password: typing.Optional[str]
     primary_group: str
     secondary_groups: typing.Optional[typing.List[str]]
 
 
 class Group(Base):
-    gid: int
+    gid: typing.Optional[int]
 
 
 # ============== Security ================
