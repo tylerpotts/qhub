@@ -13,6 +13,8 @@ Preemptible instances can be defined via using the `preemptible` flag in the
 QHub config file as following:
 
 
+### Google Cloud Platform
+
 ```yaml
 google_cloud_platform:
   project: project-name
@@ -29,3 +31,23 @@ google_cloud_platform:
       min_nodes: 0
       max_nodes: 10
 ```
+
+
+### Amazon Web Services
+
+```yaml
+amazon_web_services:
+  region: us-west-2
+  kubernetes_version: '1.18'
+  node_groups:
+#   ...
+    preemptible-instance-group:
+      preemptible: true
+      instance: m5.4xlarge
+      min_nodes: 1
+      max_nodes: 5
+```
+
+### DigitalOcean
+
+DigitalOcean does not supports preemptible instances.
