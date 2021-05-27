@@ -37,6 +37,7 @@ variable "node_groups" {
     name          = string
     instance_type = string
     gpu           = bool
+    preemptible   = bool
     min_size      = number
     desired_size  = number
     max_size      = number
