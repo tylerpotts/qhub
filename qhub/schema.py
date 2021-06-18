@@ -55,19 +55,18 @@ class CICD(Base):
     before_script: typing.Optional[typing.List[str]]
     after_script: typing.Optional[typing.List[str]]
 
-
 # ============== ClearML =============
 
 
 class ClearML(Base):
     enabled: bool
 
-
 # ============== Prefect =============
 
 
 class Prefect(Base):
     enabled: bool
+    image: typing.Optional[str]
 
 
 # ============= Terraform ===============
