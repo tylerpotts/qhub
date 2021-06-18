@@ -13,7 +13,11 @@
     "certificate": {
       "type": "self-signed"
     },
-    "prefect": null,
+    "prefect": {
+        "enabled": null,
+        "image": null
+    },
+
     "security": null,
     "default_images": null,
     "profiles": null,
