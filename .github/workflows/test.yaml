@@ -130,6 +130,7 @@ jobs:
         if: ${{ matrix.os == 'macos-latest' }}
         run: |
           eval "$(docker-machine env default)"
+          docker info
       - name: Download and Install Minikube and Kubectl
         run: |
           platform=$(uname | awk '{print tolower($0)}')
