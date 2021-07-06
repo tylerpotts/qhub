@@ -149,6 +149,7 @@ jobs:
         run: |
           minikube ssh "sudo apt update; sudo apt install nfs-common -y"
       - name: Get routing table for docker pods
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           ip route
       - name: Configure LoadBalancer IPs
