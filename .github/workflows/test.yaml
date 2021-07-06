@@ -121,7 +121,7 @@ jobs:
       - name: Install docker (for MacOS)
         if: ${{ matrix.os == 'macos-latest' }}
         run: |
-          brew cask install docker
+          brew install --cask docker
           # allow the app to run without confirmation
           xattr -d -r com.apple.quarantine /Applications/Docker.app
           
