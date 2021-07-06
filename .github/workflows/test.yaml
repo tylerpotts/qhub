@@ -120,12 +120,13 @@ jobs:
           pip install .[dev]
       - name: Download and Install Minikube and Kubectl
         run: |
+          platform=$(uname | awk '{print tolower($0)}')
           mkdir -p bin
           pushd bin
-          curl -L https://github.com/kubernetes/minikube/releases/download/v1.15.0/minikube-linux-amd64 -o minikube
+          curl -L https://github.com/kubernetes/minikube/releases/download/v1.15.0/minikube-$platform-amd64 -o minikube
           chmod +x minikube
 
-          curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.0/bin/linux/amd64/kubectl
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.0/bin/$platform/amd64/kubectl
           chmod +x kubectl
 
           echo "$PWD" >> $GITHUB_PATH
