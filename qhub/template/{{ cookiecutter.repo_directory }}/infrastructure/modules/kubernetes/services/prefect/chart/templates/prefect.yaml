@@ -18,7 +18,7 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount }}
       containers:
         - args:
-            - prefect agent start kubernetes -e JUPYTERHUB_API_TOKEN=$JUPYTERHUB_API_TOKEN
+            - prefect agent kubernetes start -e JUPYTERHUB_API_TOKEN=$JUPYTERHUB_API_TOKEN
           command:
             - /bin/bash
             - -c
