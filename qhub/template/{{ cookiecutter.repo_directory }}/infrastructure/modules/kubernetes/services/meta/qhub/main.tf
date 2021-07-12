@@ -10,18 +10,28 @@ resource "random_password" "jupyterhub_api_token_prefect" {
 }
 
 locals {
-  jupyterhub_services = var.prefect-enable ? ({
-    dask-gateway = {
-      apiToken = random_password.jupyterhub_api_token.result
-    }
-    prefect = {
-      apiToken = random_password.jupyterhub_api_token_prefect[0].result
-      admin = True
-    }
+//  jupyterhub_services = var.prefect-enable ? ({
+//    dask-gateway = {
+//      apiToken = random_password.jupyterhub_api_token.result
+//    }
+//    prefect = {
+//      apiToken = random_password.jupyterhub_api_token_prefect[0].result
+//      admin = True
+//    }
+//  }) : ({
+//    dask-gateway = {
+//      apiToken = random_password.jupyterhub_api_token.result
+//    }
+//  })
+
+
+  forwardauth-service = "c.JupyterHub.services += [{ 'name': 'forwardauth-jupyterhub-service', 'api_token': '${var.forwardauth-jh-client-secret}', 'oauth_client_id': '${var.forwardauth-jh-client-id}', 'oauth_redirect_uri': 'https://${var.external-url}${var.forwardauth-callback-url-path}', 'oauth_no_confirm': True, }]"
+
+  extraConfig = var.prefect-enable ? ({
+      forwardauthservice = local.forwardauth-service
+      prefect-service = "c.JupyterHub.services += [{ 'name': 'prefect-service', 'api_token': '${random_password.jupyterhub_api_token_prefect[0].result}', 'admin': True}]"
   }) : ({
-    dask-gateway = {
-      apiToken = random_password.jupyterhub_api_token.result
-    }
+    forwardauthservice = local.forwardauth-service
   })
 }
 
@@ -38,11 +48,13 @@ module "kubernetes-jupyterhub" {
         }
 
         image = var.jupyterhub-image
-        services = local.jupyterhub_services
-
-        extraConfig = {
-          forwardauthservice = "c.JupyterHub.services += [{ 'name': 'forwardauth-jupyterhub-service', 'api_token': '${var.forwardauth-jh-client-secret}', 'oauth_client_id': '${var.forwardauth-jh-client-id}', 'oauth_redirect_uri': 'https://${var.external-url}${var.forwardauth-callback-url-path}', 'oauth_no_confirm': True, }]"
+        services = {
+          dask-gateway = {
+            apiToken = random_password.jupyterhub_api_token.result
+          }
         }
+
+        extraConfig = local.extraConfig
       }
 
       scheduling = {
