@@ -121,5 +121,5 @@ variable "forwardauth-callback-url-path" {
 variable "prefect-enable" {
   description = "Variable to check if prefect should be enabled or not"
   type        = bool
-  default     = false
+  default     = true
 }
