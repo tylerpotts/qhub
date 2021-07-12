@@ -4,7 +4,7 @@ resource "random_password" "jupyterhub_api_token" {
 }
 
 resource "random_password" "jupyterhub_api_token_prefect" {
-  count = var.prefect-enable ? 0 : 1
+  count = var.prefect-enable ? 1 : 0
   length  = 32
   special = false
 }
