@@ -29,7 +29,7 @@ locals {
 
   extraConfig = var.prefect-enable ? ({
       forwardauthservice = local.forwardauth-service
-      prefect-service = "c.JupyterHub.services += [{ 'name': 'prefect-service', 'api_token': '${random_password.jupyterhub_api_token_prefect[0].result}', 'admin': True}]"
+      prefect-service = "c.JupyterHub.services += [{ 'name': 'prefect-service', 'groups': [], 'api_token': '${random_password.jupyterhub_api_token_prefect[0].result}', 'admin': True}]"
   }) : ({
     forwardauthservice = local.forwardauth-service
   })
