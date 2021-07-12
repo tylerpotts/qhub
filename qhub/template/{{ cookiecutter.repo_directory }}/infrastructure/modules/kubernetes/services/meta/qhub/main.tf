@@ -16,7 +16,7 @@ locals {
     }
     prefect = {
       apiToken = random_password.jupyterhub_api_token_prefect[0].result
-      admin = true
+      admin = "True"
     }
   }) : ({
     dask-gateway = {
