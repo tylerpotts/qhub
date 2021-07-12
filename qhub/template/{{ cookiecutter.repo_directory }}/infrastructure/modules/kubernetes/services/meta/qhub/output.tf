@@ -3,6 +3,11 @@ output "jupyterhub_api_token" {
   value       = random_password.jupyterhub_api_token.result
 }
 
+output "jupyterhub_api_token_prefect" {
+  description = "API token to enable in jupyterhub server for prefect"
+  value       = random_password.jupyterhub_api_token_prefect.result
+}
+
 output "tls" {
   description = "TLS configuration"
   value       = local.tls

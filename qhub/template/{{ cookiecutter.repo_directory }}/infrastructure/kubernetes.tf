@@ -201,6 +201,9 @@ module "qhub" {
   forwardauth-jh-client-id      = local.forwardauth-jh-client-id
   forwardauth-jh-client-secret  = random_password.forwardauth-jhsecret.result
   forwardauth-callback-url-path = local.forwardauth-callback-url-path
+  {% if cookiecutter.prefect.enabled -%}
+  prefect-enable = true
+  {% endif -%}
 
   depends_on = [
     module.kubernetes-ingress
@@ -215,7 +218,7 @@ module "prefect" {
     module.qhub
   ]
   namespace            = var.environment
-  jupyterhub_api_token = module.qhub.jupyterhub_api_token
+  jupyterhub_api_token = module.qhub.jupyterhub_api_token_prefect
   prefect_token        = var.prefect_token
   {% if cookiecutter.prefect.image is defined -%}
   image                = "{{ cookiecutter.prefect.image }}"
