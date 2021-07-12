@@ -5,7 +5,7 @@ output "jupyterhub_api_token" {
 
 output "jupyterhub_api_token_prefect" {
   description = "API token to enable in jupyterhub server for prefect"
-  value       = random_password.jupyterhub_api_token_prefect.result
+  value       = random_password.jupyterhub_api_token_prefect[0].result
 }
 
 output "tls" {
