@@ -18,3 +18,11 @@ variable "nfs_endpoint" {
   description = "Endpoint of nfs server"
   type        = string
 }
+
+variable "node-group" {
+  description = "Node key value pair for bound general resources"
+  type = object({
+    key   = string
+    value = string
+  })
+}

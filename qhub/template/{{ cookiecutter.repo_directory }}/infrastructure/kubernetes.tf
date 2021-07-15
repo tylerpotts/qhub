@@ -62,6 +62,7 @@ module "kubernetes-nfs-mount" {
   namespace    = var.environment
   nfs_capacity = "{{ cookiecutter.storage.shared_filesystem }}"
   nfs_endpoint = module.efs.credentials.dns_name
+  node-group   = local.node_groups.general
 }
 {% else -%}
 module "kubernetes-nfs-server" {
@@ -84,7 +85,7 @@ module "kubernetes-nfs-mount" {
   namespace    = var.environment
   nfs_capacity = "{{ cookiecutter.storage.shared_filesystem }}"
   nfs_endpoint = module.kubernetes-nfs-server.endpoint_ip
-
+  node-group   = local.node_groups.general
   depends_on = [
     module.kubernetes-nfs-server
   ]
@@ -117,7 +118,7 @@ module "kubernetes-conda-store-mount" {
   namespace    = var.environment
   nfs_capacity = "{{ cookiecutter.storage.conda_store }}"
   nfs_endpoint = module.kubernetes-conda-store-server.endpoint_ip
-
+  node-group   = local.node_groups.general
   depends_on = [
     module.kubernetes-conda-store-server
   ]

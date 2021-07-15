@@ -17,6 +17,19 @@ resource "kubernetes_persistent_volume" "main" {
     }
     storage_class_name = kubernetes_storage_class.main.metadata.0.name
     access_modes       = ["ReadWriteMany"]
+    node_affinity {
+      required {
+        node_selector_term {
+          match_expressions {
+            key      = var.node-group.key
+            operator = "In"
+            values = [
+              var.node-group.value
+            ]
+          }
+        }
+      }
+    }
     persistent_volume_source {
       nfs {
         path   = "/"
