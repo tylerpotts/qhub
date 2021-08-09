@@ -388,6 +388,11 @@ class ExtContainerReg(Base):
         return values
 
 
+# ================= Keycloak ==================
+
+class Keycloak(Base):
+    enabled: bool
+
 # ==================== Main ===================
 
 letter_dash_underscore_pydantic = pydantic.constr(regex=namestr_regex)
@@ -420,6 +425,7 @@ class Main(Base):
     environments: typing.Dict[str, CondaEnvironment]
     monitoring: typing.Optional[Monitoring]
     clearml: typing.Optional[ClearML]
+    keycloak: typing.Optional[Keycloak]
 
 
 def verify(config):
