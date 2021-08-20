@@ -204,6 +204,13 @@ class Group(Base):
     gid: int
 
 
+# ================= Keycloak ==================
+
+
+class Keycloak(Base):
+    initial_root_password: typing.Optional[str]
+
+
 # ============== Security ================
 
 
@@ -211,6 +218,7 @@ class Security(Base):
     authentication: Authentication
     users: typing.Dict[str, User]
     groups: typing.Dict[str, Group]
+    keycloak: typing.Optional[Keycloak]
 
     @validator("users", pre=True)
     def validate_uderids(cls, v):
@@ -398,13 +406,6 @@ class SMTP(Base):
     password: str
 
 
-# ================= Keycloak ==================
-
-
-class Keycloak(Base):
-    enabled: bool  # Currently ignored
-
-
 # ==================== Main ===================
 
 letter_dash_underscore_pydantic = pydantic.constr(regex=namestr_regex)
@@ -437,7 +438,6 @@ class Main(Base):
     environments: typing.Dict[str, CondaEnvironment]
     monitoring: typing.Optional[Monitoring]
     clearml: typing.Optional[ClearML]
-    keycloak: typing.Optional[Keycloak]
     smtp: typing.Optional[SMTP]
 
 

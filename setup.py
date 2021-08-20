@@ -39,7 +39,6 @@ setup(
         "auth0-python",
         "pydantic",
         "pynacl",
-        "bcrypt",
     ],
     extras_require={
         "dev": [
