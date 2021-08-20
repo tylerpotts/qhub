@@ -388,6 +388,16 @@ class ExtContainerReg(Base):
         return values
 
 
+# ================= SMTP ==================
+
+
+class SMTP(Base):
+    host: str
+    email: str
+    username: str
+    password: str
+
+
 # ================= Keycloak ==================
 
 
@@ -428,6 +438,7 @@ class Main(Base):
     monitoring: typing.Optional[Monitoring]
     clearml: typing.Optional[ClearML]
     keycloak: typing.Optional[Keycloak]
+    smtp: typing.Optional[SMTP]
 
 
 def verify(config):
