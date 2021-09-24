@@ -386,7 +386,8 @@ class QHubExtension(Base):
     name: str
     image: str
     urlslug: str
-    private: bool
+    private: bool = False
+    oauth2client: bool = False
     envs: typing.Optional[typing.List[QHubExtensionEnv]]
 
 
