@@ -430,16 +430,6 @@ class ExtContainerReg(Base):
         return values
 
 
-# ================= SMTP ==================
-
-
-class SMTP(Base):
-    host: str
-    email: str
-    username: str
-    password: str
-
-
 # ==================== Main ===================
 
 letter_dash_underscore_pydantic = pydantic.constr(regex=namestr_regex)
@@ -472,7 +462,6 @@ class Main(Base):
     environments: typing.Dict[str, CondaEnvironment]
     monitoring: typing.Optional[Monitoring]
     clearml: typing.Optional[ClearML]
-    smtp: typing.Optional[SMTP]
     extensions: typing.Optional[typing.List[QHubExtension]]
 
 
