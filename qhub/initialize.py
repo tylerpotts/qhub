@@ -76,7 +76,6 @@ AUTH_OAUTH_GITHUB = {
     "config": {
         "client_id": "PLACEHOLDER",
         "client_secret": "PLACEHOLDER",
-        "oauth_callback_url": "PLACEHOLDER",
     },
 }
 
@@ -85,8 +84,6 @@ AUTH_OAUTH_AUTH0 = {
     "config": {
         "client_id": "PLACEHOLDER",
         "client_secret": "PLACEHOLDER",
-        "oauth_callback_url": "PLACEHOLDER",
-        "scope": ["openid", "email", "profile"],
         "auth0_subdomain": "PLACEHOLDER",
     },
 }
