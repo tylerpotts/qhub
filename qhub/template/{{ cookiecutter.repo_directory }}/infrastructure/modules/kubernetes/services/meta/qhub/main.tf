@@ -200,8 +200,7 @@ resource "kubernetes_config_map" "dask-etc" {
 
 
 resource "kubernetes_manifest" "jupyterhub" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "IngressRoute"
@@ -229,8 +228,7 @@ resource "kubernetes_manifest" "jupyterhub" {
 }
 
 resource "kubernetes_manifest" "dask-gateway" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "IngressRoute"
@@ -266,8 +264,7 @@ resource "kubernetes_manifest" "dask-gateway" {
 }
 
 resource "kubernetes_manifest" "jupyterhub-ssh-ingress" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "IngressRouteTCP"
@@ -294,8 +291,7 @@ resource "kubernetes_manifest" "jupyterhub-ssh-ingress" {
 
 
 resource "kubernetes_manifest" "jupyterhub-sftp-ingress" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "IngressRouteTCP"
@@ -321,8 +317,7 @@ resource "kubernetes_manifest" "jupyterhub-sftp-ingress" {
 }
 
 resource "kubernetes_manifest" "forwardauth" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "IngressRoute"

@@ -13,8 +13,7 @@ resource "kubernetes_secret" "customer_extcr_key" {
 }
 
 resource "kubernetes_manifest" "role_extcr_cred_updater" {
-  provider = kubernetes-alpha
-  manifest = {
+    manifest = {
     "apiVersion" = "rbac.authorization.k8s.io/v1"
     "kind"       = "Role"
     "metadata" = {
@@ -52,8 +51,7 @@ resource "kubernetes_manifest" "role_extcr_cred_updater" {
 }
 
 resource "kubernetes_manifest" "serviceaccount_extcr_cred_updater" {
-  provider = kubernetes-alpha
-  manifest = {
+    manifest = {
     "apiVersion" = "v1"
     "kind"       = "ServiceAccount"
     "metadata" = {
@@ -64,8 +62,7 @@ resource "kubernetes_manifest" "serviceaccount_extcr_cred_updater" {
 }
 
 resource "kubernetes_manifest" "rolebinding_extcr_cred_updater" {
-  provider = kubernetes-alpha
-  manifest = {
+    manifest = {
     "apiVersion" = "rbac.authorization.k8s.io/v1"
     "kind"       = "RoleBinding"
     "metadata" = {
@@ -87,8 +84,7 @@ resource "kubernetes_manifest" "rolebinding_extcr_cred_updater" {
 }
 
 resource "kubernetes_manifest" "job_extcr_cred_updater" {
-  provider = kubernetes-alpha
-  manifest = {
+    manifest = {
     "apiVersion" = "batch/v1"
     "kind"       = "Job"
     "metadata" = {
@@ -171,8 +167,7 @@ resource "kubernetes_manifest" "job_extcr_cred_updater" {
 }
 
 resource "kubernetes_manifest" "cronjob_extcr_cred_updater" {
-  provider = kubernetes-alpha
-  manifest = {
+    manifest = {
     "apiVersion" = "batch/v1beta1"
     "kind"       = "CronJob"
     "metadata" = {

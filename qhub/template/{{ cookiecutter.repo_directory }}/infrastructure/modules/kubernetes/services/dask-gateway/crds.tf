@@ -1,6 +1,5 @@
 resource "kubernetes_manifest" "main" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1beta1"
     kind       = "CustomResourceDefinition"

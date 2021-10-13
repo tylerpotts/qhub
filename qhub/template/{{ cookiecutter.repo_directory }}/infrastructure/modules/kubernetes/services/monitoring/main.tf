@@ -50,8 +50,7 @@ EOT
 }
 
 resource "kubernetes_manifest" "traefik_dashboard_configmap" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "v1"
     kind       = "ConfigMap"
@@ -70,8 +69,7 @@ resource "kubernetes_manifest" "traefik_dashboard_configmap" {
 }
 
 resource "kubernetes_manifest" "grafana-strip-prefix-middleware" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "Middleware"
@@ -91,8 +89,7 @@ resource "kubernetes_manifest" "grafana-strip-prefix-middleware" {
 
 
 resource "kubernetes_manifest" "grafana-ingress-route" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "IngressRoute"

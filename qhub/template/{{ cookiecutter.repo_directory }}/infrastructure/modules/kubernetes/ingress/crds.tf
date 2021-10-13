@@ -1,5 +1,4 @@
 resource "kubernetes_manifest" "ingress_route" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
@@ -200,8 +199,7 @@ resource "kubernetes_manifest" "ingress_route" {
 
 
 resource "kubernetes_manifest" "ingress_route_tcp" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
     kind       = "CustomResourceDefinition"
@@ -350,8 +348,7 @@ resource "kubernetes_manifest" "ingress_route_tcp" {
 
 
 resource "kubernetes_manifest" "ingress_route_udp" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
     kind       = "CustomResourceDefinition"
@@ -427,8 +424,7 @@ resource "kubernetes_manifest" "ingress_route_udp" {
 
 
 resource "kubernetes_manifest" "middleware" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
     kind       = "CustomResourceDefinition"
@@ -1071,8 +1067,7 @@ resource "kubernetes_manifest" "middleware" {
 
 
 resource "kubernetes_manifest" "serverstransports" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
     kind       = "CustomResourceDefinition"
@@ -1150,8 +1145,7 @@ resource "kubernetes_manifest" "serverstransports" {
 
 
 resource "kubernetes_manifest" "tls_option" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
     kind       = "CustomResourceDefinition"
@@ -1230,8 +1224,7 @@ resource "kubernetes_manifest" "tls_option" {
 
 
 resource "kubernetes_manifest" "tls_stores" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
     kind       = "CustomResourceDefinition"
@@ -1279,8 +1272,7 @@ resource "kubernetes_manifest" "tls_stores" {
 
 
 resource "kubernetes_manifest" "traefik_service" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "apiextensions.k8s.io/v1"
     kind       = "CustomResourceDefinition"

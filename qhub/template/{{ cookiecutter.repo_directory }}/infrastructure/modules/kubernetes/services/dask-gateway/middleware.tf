@@ -1,6 +1,5 @@
 resource "kubernetes_manifest" "gateway-middleware" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "Middleware"
@@ -22,8 +21,7 @@ resource "kubernetes_manifest" "gateway-middleware" {
 # The chain combines traefik-forward-auth and stripprefix middleware defined below.
 
 resource "kubernetes_manifest" "chain-middleware" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "Middleware"
@@ -49,8 +47,7 @@ resource "kubernetes_manifest" "chain-middleware" {
 }
 
 resource "kubernetes_manifest" "cluster-middleware-stripprefix" {
-  provider = kubernetes-alpha
-
+  
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
     kind       = "Middleware"
