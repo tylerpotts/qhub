@@ -23,6 +23,10 @@ provider "kubernetes" {
     command     = "aws"
   }
 {% endif %}
+
+  experiments {
+    manifest_resource = true
+  }
 }
 
 module "kubernetes-initialization" {
