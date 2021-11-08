@@ -2,7 +2,10 @@
     "repo_directory": null,
     "project_name": null,
     "namespace": "dev",
-    "provider": null,
+    "provider": {
+        "name": null,
+        "custom_namming_resources" : null
+    },
     "ci_cd": {
       "branch": "main"
     },
