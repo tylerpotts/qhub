@@ -47,24 +47,20 @@ class Base(pydantic.BaseModel):
     class Config:
         extra = "forbid"
 
+
 # ============ Provider ===========
 
+
 class Provider(Base):
-    name : ProviderEnum
-    custom_namming_resources : typing.Optional[typing.Dict]
+    name: ProviderEnum
+    custom_namming_resources: typing.Optional[typing.Dict]
 
     @validator("name", pre=True)
     def check_default(cls, v):
         """Check if provider name correspond to supported ones"""
-        PROVIDERS = [
-            "local",
-            "do",
-            "aws",
-            "gcp",
-            "azure"
-        ]
+        PROVIDERS = ["local", "do", "aws", "gcp", "azure"]
 
-        if not v in PROVIDERS:
+        if v not in PROVIDERS:
             raise TypeError(
                 f"""
                 [{v}] is not recognized as a supported provider.
@@ -72,6 +68,7 @@ class Provider(Base):
                 """
             )
         return v
+
 
 # ============== CI/CD =============
 
