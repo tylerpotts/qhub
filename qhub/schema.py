@@ -1,5 +1,6 @@
 import enum
 import typing
+import ipaddress
 from abc import ABC
 
 import pydantic
@@ -48,12 +49,18 @@ class Base(pydantic.BaseModel):
         extra = "forbid"
 
 
+class LoadBalancer(Base):
+    annotations: typing.Optional[typing.Dict[str, str]]
+    ip_adress: typing.Optional[ipaddress.IPv4Address]
+
+
 # ============ Provider ===========
 
 
 class Provider(Base):
     name: ProviderEnum
     custom_namming_resources: typing.Optional[typing.Dict]
+    internal_load_balancer: typing.Optional[LoadBalancer]
 
     @validator("name", pre=True)
     def check_default(cls, v):
