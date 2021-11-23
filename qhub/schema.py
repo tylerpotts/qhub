@@ -465,6 +465,7 @@ class Main(Base):
     project_name: letter_dash_underscore_pydantic
     namespace: typing.Optional[letter_dash_underscore_pydantic]
     provider: ProviderEnum
+    provider_extra: typing.Optional[Provider]
     qhub_version: str = ""
     ci_cd: typing.Optional[CICD]
     domain: str
