@@ -32,6 +32,17 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   tags = var.tags
+
+  {% if cookiecutter.provider.rbac.enabled %}
+  # Enable RBAC Access
+  role_based_access_control {
+    enabled = true
+    azure_active_directory {
+      managed = true
+      admin_group_object_ids = var.AdminGroupObjectIDs
+    }
+  }
+  {% endif %}
 }
 
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool

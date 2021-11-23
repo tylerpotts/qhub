@@ -2,6 +2,7 @@ import enum
 import typing
 import ipaddress
 from abc import ABC
+import os
 
 import pydantic
 from pydantic import validator, root_validator
@@ -54,6 +55,29 @@ class LoadBalancer(Base):
     ip_adress: typing.Optional[ipaddress.IPv4Address]
 
 
+class RBAC(Base):
+    enabled: bool
+    import_from: str
+
+    # filename = pathlib.Path(config_filename)
+
+    # if not filename.is_file():
+
+    # input_directory = pathlib.Path(input_directory)
+    # if not input_directory.is_dir():
+    #     raise ValueError(f"input directory={input_directory} is not a directory")
+
+    @validator("import_from")
+    def check_default(cls, v, values):
+        """Check if RBAC external files path exists and is correctly assigned"""
+        if values["enabled"]:
+            try:
+                os.path.isdir(v)
+            except NotADirectoryError as e:
+                raise TypeError(e)
+        return v
+
+
 # ============ Provider ===========
 
 
@@ -61,6 +85,7 @@ class Provider(Base):
     name: ProviderEnum
     custom_namming_resources: typing.Optional[typing.Dict]
     internal_load_balancer: typing.Optional[LoadBalancer]
+    rbac: typing.Optional[RBAC]
 
     @validator("name", pre=True)
     def check_default(cls, v):

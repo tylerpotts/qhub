@@ -39,3 +39,11 @@ variable "tags" {
   description = "A mapping of tags which should be assigned to the Resource Group"
   type        = map(any)
 }
+
+{% if cookiecutter.provider.rbac.enabled %}
+  variable "AdminGroupObjectIDs" {
+    description = "RBAC Admin settings"
+    type = set(string)
+    default = []
+  }
+{% endif %}
