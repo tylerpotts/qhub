@@ -130,7 +130,8 @@
         },
         "rbac": {
             "enabled": null
-        }
+        },
+        "tags": {}
     },
 
     "amazon_web_services": {

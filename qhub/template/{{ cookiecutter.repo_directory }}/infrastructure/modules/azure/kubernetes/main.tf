@@ -33,7 +33,7 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   tags = var.tags
 
-  {% if cookiecutter.provider.rbac.enabled %}
+  {% if cookiecutter.azure.rbac.enabled %}
   # Enable RBAC Access
   role_based_access_control {
     enabled = true

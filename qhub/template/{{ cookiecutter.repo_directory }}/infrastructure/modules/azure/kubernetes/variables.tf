@@ -40,7 +40,7 @@ variable "tags" {
   type        = map(any)
 }
 
-{% if cookiecutter.provider.rbac.enabled %}
+{% if cookiecutter.azure.rbac.enabled %}
   variable "AdminGroupObjectIDs" {
     description = "RBAC Admin settings"
     type = set(string)

@@ -284,6 +284,7 @@ class AzureProvider(Base):
     storage_account_postfix: str
     internal_load_balancer: typing.Optional[LoadBalancer]
     rbac: typing.Optional[RBAC]
+    tags: typing.Dict[str, str]
 
 
 class AmazonWebServicesProvider(Base):

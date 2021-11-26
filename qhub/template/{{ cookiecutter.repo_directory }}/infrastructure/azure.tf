@@ -32,4 +32,10 @@ module "kubernetes" {
     },
 {% endfor %}
   ]
+
+{% for name, value in cookiecutter.azure.tags.items() %}
+  tags = {
+    "{{ name }}" = "{{ value }}"
+  }
+{% endif %}
 }
