@@ -3,14 +3,6 @@
     "project_name": null,
     "namespace": "dev",
     "provider": null,
-    "provider_extra": {
-        "name": null,
-        "custom_namming_resources" : null,
-        "internal_load_balancer": {
-            "ip_adress": null,
-            "annotations": null
-        }
-    },
     "ci_cd": {
       "branch": "main"
     },
@@ -131,6 +123,13 @@
                 "min_nodes": null,
                 "max_nodes": null
             }
+        },
+        "internal_load_balancer": {
+            "ip_adress": null,
+            "annotations": null
+        },
+        "rbac": {
+            "enabled": null
         }
     },
 

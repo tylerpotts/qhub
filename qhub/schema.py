@@ -78,30 +78,6 @@ class RBAC(Base):
         return v
 
 
-# ============ Provider ===========
-
-
-class Provider(Base):
-    name: ProviderEnum
-    custom_namming_resources: typing.Optional[typing.Dict]
-    internal_load_balancer: typing.Optional[LoadBalancer]
-    rbac: typing.Optional[RBAC]
-
-    @validator("name", pre=True)
-    def check_default(cls, v):
-        """Check if provider name correspond to supported ones"""
-        PROVIDERS = ["local", "do", "aws", "gcp", "azure"]
-
-        if v not in PROVIDERS:
-            raise TypeError(
-                f"""
-                [{v}] is not recognized as a supported provider.
-                Please check our list of current supported provider at:
-                """
-            )
-        return v
-
-
 # ============== CI/CD =============
 
 
@@ -306,6 +282,8 @@ class AzureProvider(Base):
     kubernetes_version: str
     node_groups: typing.Dict[str, NodeGroup]
     storage_account_postfix: str
+    internal_load_balancer: typing.Optional[LoadBalancer]
+    rbac: typing.Optional[RBAC]
 
 
 class AmazonWebServicesProvider(Base):
@@ -465,7 +443,6 @@ class Main(Base):
     project_name: letter_dash_underscore_pydantic
     namespace: typing.Optional[letter_dash_underscore_pydantic]
     provider: ProviderEnum
-    provider_extra: typing.Optional[Provider]
     qhub_version: str = ""
     ci_cd: typing.Optional[CICD]
     domain: str
