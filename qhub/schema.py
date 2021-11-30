@@ -283,8 +283,8 @@ class AzureProvider(Base):
     node_groups: typing.Dict[str, NodeGroup]
     storage_account_postfix: str
     internal_load_balancer: typing.Optional[LoadBalancer]
-    rbac: typing.Optional[RBAC]
-    tags: typing.Dict[str, str]
+    # rbac: typing.Optional[RBAC]
+    tags: typing.Optional[typing.Dict[str, str]]
 
 
 class AmazonWebServicesProvider(Base):

@@ -128,9 +128,6 @@
             "ip_adress": null,
             "annotations": null
         },
-        "rbac": {
-            "enabled": null
-        },
         "tags": {}
     },
 

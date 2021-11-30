@@ -33,16 +33,37 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   tags = var.tags
 
-  {% if cookiecutter.azure.rbac.enabled %}
-  # Enable RBAC Access
-  role_based_access_control {
-    enabled = true
-    azure_active_directory {
-      managed = true
-      admin_group_object_ids = var.AdminGroupObjectIDs
-    }
-  }
-  {% endif %}
+  # {% if cookiecutter.azure.rbac.enabled %}
+  # # Enable RBAC Access
+  # role_based_access_control {
+  #   enabled = true
+  #   azure_active_directory {
+  #     managed = true
+  #     admin_group_object_ids = var.AdminGroupObjectIDs
+  #   }
+  # }
+  # {% endif %}
+}
+
+# resource group for the network
+data "azurerm_resource_group" "vnet" {
+  count = var.assign_vnet ? 1 : 0
+  name = var.vnet_resource_group_name
+}
+
+# network configuration
+data "azurerm_virtual_network" "vnet" {
+  count = var.assign_vnet ? 1 : 0
+  name = var.vnet_name
+  resource_group_name = var.resource_group_name
+}
+
+resource "azure_virtual_network" "azure-vnet" {
+  count = var.assign_vnet ? 1 : 0
+  name                = "example-network"
+  address_space       = ["10.0.0.0/16"] # default...
+  location            = var.location
+  resource_group_name = var.resource_group_name
 }
 
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool

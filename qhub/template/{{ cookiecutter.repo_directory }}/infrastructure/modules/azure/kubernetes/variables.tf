@@ -38,12 +38,31 @@ variable "node_groups" {
 variable "tags" {
   description = "A mapping of tags which should be assigned to the Resource Group"
   type        = map(any)
+  default     = {}
 }
 
-{% if cookiecutter.azure.rbac.enabled %}
-  variable "AdminGroupObjectIDs" {
-    description = "RBAC Admin settings"
-    type = set(string)
-    default = []
-  }
-{% endif %}
+# {% if cookiecutter.azure.rbac.enabled %}
+#   variable "AdminGroupObjectIDs" {
+#     description = "RBAC Admin settings"
+#     type = set(string)
+#     default = []
+#   }
+# {% endif %}
+
+variable "assign_vnet" {
+  description = "Assign existing Virtual Network to cluster"
+  type        = bool
+  default     = false
+}
+
+variable "vnet_resource_group_name" {
+  description = ""
+  type        = string
+  default     = "qhub-aks-vnet"
+}
+
+varaible "vnet_name" {
+  description = ""
+  type        = string
+  default     = "aks-vnet"
+}

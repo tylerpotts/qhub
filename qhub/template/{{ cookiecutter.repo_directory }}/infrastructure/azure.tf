@@ -8,6 +8,13 @@ module "registry" {
   name                = "{{ cookiecutter.project_name }}{{ cookiecutter.namespace }}"
   location            = "{{ cookiecutter.azure.region }}"
   resource_group_name = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}"
+{% if cookiecutter.azure.tags is defined %}
+  tags = {
+{% for name, value in cookiecutter.azure.tags.items() %}
+    "{{ name }}" = "{{ value }}",
+{% endfor %}
+  }
+{% endif %}
 }
 
 
@@ -33,9 +40,11 @@ module "kubernetes" {
 {% endfor %}
   ]
 
-{% for name, value in cookiecutter.azure.tags.items() %}
+{% if cookiecutter.azure.tags is defined %}
   tags = {
-    "{{ name }}" = "{{ value }}"
+{% for name, value in cookiecutter.azure.tags.items() %}
+    "{{ name }}" = "{{ value }}",
+{% endfor %}
   }
 {% endif %}
 }
