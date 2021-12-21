@@ -47,4 +47,11 @@ module "kubernetes" {
 {% endfor %}
   }
 {% endif %}
+
+{% if cookiecutter.rbac.enabled is defined }
+rbac_enabled = {<<EOT
+  {{ cookiecutter.rbac|yamlify -}}
+  EOT
+  }
+{% endif }
 }

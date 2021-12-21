@@ -33,29 +33,7 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   tags = var.tags
 
-  # {% if cookiecutter.azure.rbac.enabled %}
-  # # Enable RBAC Access
-  # role_based_access_control {
-  #   enabled = true
-  #   azure_active_directory {
-  #     managed = true
-  #     admin_group_object_ids = var.AdminGroupObjectIDs
-  #   }
-  # }
-  # {% endif %}
-}
-
-# resource group for the network
-data "azurerm_resource_group" "vnet" {
-  count = var.assign_vnet ? 1 : 0
-  name = var.vnet_resource_group_name
-}
-
-# network configuration
-data "azurerm_virtual_network" "vnet" {
-  count = var.assign_vnet ? 1 : 0
-  name = var.vnet_name
-  resource_group_name = var.resource_group_name
+  role_based_access_control = var.rbac_enabled
 }
 
 resource "azure_virtual_network" "azure-vnet" {
