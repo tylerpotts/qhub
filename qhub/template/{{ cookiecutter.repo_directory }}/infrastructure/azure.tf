@@ -48,11 +48,11 @@ module "kubernetes" {
   }
 {% endif %}
 
-{% if cookiecutter.role_based_access_control is defined %}
-rbac_enabled = {<<EOT
-  {{ cookiecutter.rbac|yamlify -}}
-  EOT
-  }
+{% if cookiecutter.azure.role_based_access_control is defined %}
+rbac_enabled = true
+{% if cookiecutter.azure.role_based_access_control.azure_active_directory is defined %}
+admin_group_object_ids = {{ cookiecutter.azure.role_based_access_control.azure_active_directory.admin_group_object_ids | jsonify }}
+{% endif %}
 {% endif %}
 
 }

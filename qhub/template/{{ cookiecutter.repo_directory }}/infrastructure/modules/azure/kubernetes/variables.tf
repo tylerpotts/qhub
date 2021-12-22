@@ -47,7 +47,7 @@ variable "rbac_enabled" {
   default = false
 }
 
-variable "admin_group_objects_ids" {
+variable "admin_group_object_ids" {
   description = "RBAC Admin settings"
   type = set(string)
   default = []

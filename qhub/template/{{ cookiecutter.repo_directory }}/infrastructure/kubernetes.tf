@@ -170,18 +170,18 @@ module "kubernetes-ingress" {
 
   node-group = local.node_groups.general
 
-{%- if cookiecutter.azure.internal_load_balancer is defined %}
-{%- if cookiecutter.azure.internal_load_balancer.ip_adress %}
+{% if cookiecutter.azure.internal_load_balancer is defined %}
+{%- if cookiecutter.azure.internal_load_balancer.ip_adress is defined %}
   load-balancer-ip = "{{ cookiecutter.azure.internal_load_balancer.ip_adress }}"
 {% endif %}
-{%- if cookiecutter.azure.internal_load_balancer.annotations %}
+{%- if cookiecutter.azure.internal_load_balancer.annotations is defined %}
   load-balancer-annotations = {
 {%- for key, value in cookiecutter.azure.internal_load_balancer.annotations.items() %}
     "{{ "%s" | format(key) }}" = "{{ value }}"
-{% endfor %}
+{% endfor -%}
   }
-{% endif %}
-{% endif %}
+{% endif -%}
+{% endif -%}
 
 {% if cookiecutter.certificate.type == "lets-encrypt" %}
   enable-certificates = true

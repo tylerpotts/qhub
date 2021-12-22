@@ -36,8 +36,8 @@ resource "azurerm_kubernetes_cluster" "main" {
   role_based_access_control {
     enabled = var.rbac_enabled
     azure_active_directory {
-      managed =  var.admin_group_objects_ids != [] ? true : false
-      admin_group_objects_ids = var.admin_group_object_ids
+      managed =  var.admin_group_object_ids != [] ? true : false
+      admin_group_object_ids = var.admin_group_object_ids
     }
   }
 }

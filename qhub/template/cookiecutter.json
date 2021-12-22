@@ -132,7 +132,11 @@
         "role_based_access_control": {
             "enabled": null,
             "azure_active_directory" : {
-                "admin_group_objects_ids" : []
+                "managed": null,
+                "admin_group_objects_ids" : [],
+                "client_app_id" : null,
+                "server_app_id" : null,
+                "server_app_secret" : null
             }
         }
     },
