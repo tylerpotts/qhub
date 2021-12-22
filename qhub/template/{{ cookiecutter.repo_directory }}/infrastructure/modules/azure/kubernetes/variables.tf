@@ -42,10 +42,17 @@ variable "tags" {
 }
 
 variable "rbac_enabled" {
-  description = "value"
-  type = map(any)
-  default = {}
+  description = ""
+  type = bool
+  default = false
 }
+
+variable "admin_group_objects_ids" {
+  description = "RBAC Admin settings"
+  type = set(string)
+  default = []
+}
+
 # {% if cookiecutter.azure.rbac.enabled %}
 #   variable "AdminGroupObjectIDs" {
 #     description = "RBAC Admin settings"

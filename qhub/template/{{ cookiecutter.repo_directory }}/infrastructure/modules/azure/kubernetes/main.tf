@@ -33,15 +33,13 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   tags = var.tags
 
-  role_based_access_control = var.rbac_enabled
-}
-
-resource "azure_virtual_network" "azure-vnet" {
-  count = var.assign_vnet ? 1 : 0
-  name                = "example-network"
-  address_space       = ["10.0.0.0/16"] # default...
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  role_based_access_control {
+    enabled = var.rbac_enabled
+    azure_active_directory {
+      managed =  var.admin_group_objects_ids != [] ? true : false
+      admin_group_objects_ids = var.admin_group_object_ids
+    }
+  }
 }
 
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool

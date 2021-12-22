@@ -48,10 +48,11 @@ module "kubernetes" {
   }
 {% endif %}
 
-{% if cookiecutter.rbac.enabled is defined }
+{% if cookiecutter.role_based_access_control is defined %}
 rbac_enabled = {<<EOT
   {{ cookiecutter.rbac|yamlify -}}
   EOT
   }
-{% endif }
+{% endif %}
+
 }

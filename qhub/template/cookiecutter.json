@@ -128,7 +128,13 @@
             "ip_adress": null,
             "annotations": null
         },
-        "tags": {}
+        "tags": {},
+        "role_based_access_control": {
+            "enabled": null,
+            "azure_active_directory" : {
+                "admin_group_objects_ids" : []
+            }
+        }
     },
 
     "amazon_web_services": {

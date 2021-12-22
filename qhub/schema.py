@@ -2,7 +2,6 @@ import enum
 import typing
 import ipaddress
 from abc import ABC
-import os
 
 import pydantic
 from pydantic import validator, root_validator
@@ -57,25 +56,7 @@ class LoadBalancer(Base):
 
 class RBAC(Base):
     enabled: bool
-    import_from: str
-
-    # filename = pathlib.Path(config_filename)
-
-    # if not filename.is_file():
-
-    # input_directory = pathlib.Path(input_directory)
-    # if not input_directory.is_dir():
-    #     raise ValueError(f"input directory={input_directory} is not a directory")
-
-    @validator("import_from")
-    def check_default(cls, v, values):
-        """Check if RBAC external files path exists and is correctly assigned"""
-        if values["enabled"]:
-            try:
-                os.path.isdir(v)
-            except NotADirectoryError as e:
-                raise TypeError(e)
-        return v
+    azure_active_directory: typing.Optional[typing.Dict[typing.Any, typing.Any]]
 
 
 # ============== CI/CD =============
@@ -283,7 +264,7 @@ class AzureProvider(Base):
     node_groups: typing.Dict[str, NodeGroup]
     storage_account_postfix: str
     internal_load_balancer: typing.Optional[LoadBalancer]
-    # rbac: typing.Optional[RBAC]
+    role_based_access_control: typing.Optional[RBAC]
     tags: typing.Optional[typing.Dict[str, str]]
 
 
