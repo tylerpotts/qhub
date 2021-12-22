@@ -54,20 +54,20 @@ variable "rbac_enabled" {
 #   }
 # {% endif %}
 
-variable "assign_vnet" {
-  description = "Assign existing Virtual Network to cluster"
-  type        = bool
-  default     = false
-}
+# variable "assign_vnet" {
+#   description = "Assign existing Virtual Network to cluster"
+#   type        = bool
+#   default     = false
+# }
 
-variable "vnet_resource_group_name" {
-  description = ""
-  type        = string
-  default     = "qhub-aks-vnet"
-}
+# variable "vnet_resource_group_name" {
+#   description = ""
+#   type        = string
+#   default     = "qhub-aks-vnet"
+# }
 
-varaible "vnet_name" {
-  description = ""
-  type        = string
-  default     = "aks-vnet"
-}
+# varaible "vnet_name" {
+#   description = ""
+#   type        = string
+#   default     = "aks-vnet"
+# }
