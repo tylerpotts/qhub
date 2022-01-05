@@ -25,7 +25,7 @@ provider "kubernetes" {
 {% endif %}
 }
 
-provider "kubernetes-alpha" {
+provider "kubernetes" {
 {% if cookiecutter.provider == "local" %}
   config_path = "~/.kube/config"
 {% if cookiecutter.local.kube_context is defined %}
@@ -43,6 +43,9 @@ provider "kubernetes-alpha" {
   cluster_ca_certificate = module.kubernetes.credentials.cluster_ca_certificate
   token                  = module.kubernetes.credentials.token
 {% endif %}
+    experiments {
+        manifest_resource = true
+    }
 }
 
 
