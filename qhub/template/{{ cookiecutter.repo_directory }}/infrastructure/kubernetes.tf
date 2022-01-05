@@ -294,6 +294,7 @@ module "forwardauth" {
   namespace    = var.environment
   external-url = var.endpoint
 
+  node-group = local.node_groups.general
   jh-client-id      = local.forwardauth-jh-client-id
   jh-client-secret  = random_password.forwardauth-jhsecret.result
   callback-url-path = local.forwardauth-callback-url-path
