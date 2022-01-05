@@ -22,7 +22,6 @@ resource "helm_release" "keycloak" {
 }
 
 resource "kubernetes_manifest" "keycloak-http" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"

@@ -128,7 +128,6 @@ resource "kubernetes_manifest" "forwardauth-middleware" {
   # itself, so the callback _oauth url can be centalised (not just under for example /someservice/_oauth).
   # This middleware is in the root namespace, someservice may have its own.
 
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"

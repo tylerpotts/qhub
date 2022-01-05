@@ -17,7 +17,6 @@ locals {
 }
 
 resource "kubernetes_manifest" "clearml-app" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
@@ -48,7 +47,6 @@ resource "kubernetes_manifest" "clearml-app" {
 }
 
 resource "kubernetes_manifest" "clearml-files" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
@@ -79,7 +77,6 @@ resource "kubernetes_manifest" "clearml-files" {
 }
 
 resource "kubernetes_manifest" "clearml-api" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"

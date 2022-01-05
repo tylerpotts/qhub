@@ -6,29 +6,29 @@ resource "helm_release" "kube-prometheus-stack-helm-deployment" {
   version    = "16.12.0"
 
   values = [<<EOT
-prometheus:    
-  prometheusSpec:    
-    additionalScrapeConfigs:    
-    
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+
     # This job will scrape from any service with the label app.kubernetes.io/component=traefik-internal-service
-    # and the annotation app.kubernetes.io/scrape=true 
-    - job_name: 'traefik'    
-    
-      kubernetes_sd_configs:    
-        - role: service    
-          
-      relabel_configs:    
-      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]    
-        action: keep    
-        regex: true    
-      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]    
-        action: replace    
-        target_label: __metrics_path__    
-        regex: (.+)    
+    # and the annotation app.kubernetes.io/scrape=true
+    - job_name: 'traefik'
+
+      kubernetes_sd_configs:
+        - role: service
+
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
       - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
-        action: replace    
-        regex: ([^:]+)(?::\d+)?;(\d+)    
-        replacement: $1:$2    
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
         target_label: __address__
 EOT
   ]
@@ -50,7 +50,6 @@ EOT
 }
 
 resource "kubernetes_manifest" "traefik_dashboard_configmap" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "v1"
@@ -70,7 +69,6 @@ resource "kubernetes_manifest" "traefik_dashboard_configmap" {
 }
 
 resource "kubernetes_manifest" "grafana-strip-prefix-middleware" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
@@ -91,7 +89,6 @@ resource "kubernetes_manifest" "grafana-strip-prefix-middleware" {
 
 
 resource "kubernetes_manifest" "grafana-ingress-route" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"

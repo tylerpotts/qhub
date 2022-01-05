@@ -1,5 +1,4 @@
 resource "kubernetes_manifest" "qhubextension-ingressroute" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
@@ -40,7 +39,6 @@ resource "kubernetes_manifest" "qhubextension-ingressroute" {
 # Strip Prefix middleware to remove urlslug
 
 resource "kubernetes_manifest" "qhubextension-middleware" {
-  provider = kubernetes-alpha
 
   manifest = {
     apiVersion = "traefik.containo.us/v1alpha1"
