@@ -137,53 +137,13 @@ resource "kubernetes_manifest" "ingress_route" {
                     tls = {
                       type = "object"
                       properties = {
-                        secretName = {
-                          type = "string"
-                        }
-                        options = {
-                          type     = "object"
-                          required = ["name", "namespace"]
-                          properties = {
-                            name = {
-                              type = "string"
-                            }
-                            namespace = {
-                              type = "string"
-                            }
-                          }
-                        }
-                        store = {
-                          type     = "object"
-                          required = ["name", "namespace"]
-                          properties = {
-                            name = {
-                              type = "string"
-                            }
-                            namespace = {
-                              type = "string"
-                            }
-                          }
-                        }
+
+
+
                         certResolver = {
                           type = "string"
                         }
-                        domains = {
-                          type = "array"
-                          items = {
-                            type = "object"
-                            properties = {
-                              main = {
-                                type = "string"
-                              }
-                              sans = {
-                                type = "array"
-                                items = {
-                                  type = "string"
-                                }
-                              }
-                            }
-                          }
-                        }
+
                       }
                     }
                   }
