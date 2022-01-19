@@ -40,6 +40,12 @@ variable "enable-certificates" {
   default     = false
 }
 
+variable "certificate-secret-name" {
+  description = "tls certificate secret name to use"
+  type        = string
+  default     = ""
+}
+
 variable "acme-email" {
   description = "ACME server email"
   default     = "costrouchov@quansight.com"
@@ -52,3 +58,4 @@ variable "acme-server" {
   #  - production: https://acme-v02.api.letsencrypt.org/directory
   default = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
+

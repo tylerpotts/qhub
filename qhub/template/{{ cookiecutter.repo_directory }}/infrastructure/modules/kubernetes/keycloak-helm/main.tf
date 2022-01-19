@@ -46,7 +46,7 @@ resource "kubernetes_manifest" "keycloak-http" {
           ]
         }
       ]
-      tls = local.tls
+      tls = {}
     }
   }
 }

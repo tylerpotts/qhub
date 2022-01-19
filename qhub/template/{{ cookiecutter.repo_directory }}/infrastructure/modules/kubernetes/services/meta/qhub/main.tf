@@ -261,7 +261,7 @@ resource "kubernetes_manifest" "jupyterhub" {
           ]
         }
       ]
-      tls = local.tls
+      tls = {}
     }
   }
 }
@@ -297,7 +297,7 @@ resource "kubernetes_manifest" "dask-gateway" {
           ]
         }
       ]
-      tls = local.tls
+      tls = {}
     }
   }
 }
@@ -386,7 +386,7 @@ resource "kubernetes_manifest" "forwardauth" {
           ]
         }
       ]
-      tls = local.tls
+      tls = {}
     }
   }
 }

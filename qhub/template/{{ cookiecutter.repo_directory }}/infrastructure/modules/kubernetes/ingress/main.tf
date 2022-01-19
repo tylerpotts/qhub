@@ -293,3 +293,20 @@ resource "kubernetes_deployment" "main" {
     }
   }
 }
+
+resource "kubernetes_manifest" "tlsstore_default" {
+  count = var.certificate-secret-name == "" ? 0 : 1
+  manifest = {
+    "apiVersion" = "traefik.containo.us/v1alpha1"
+    "kind" = "TLSStore"
+    "metadata" = {
+      "name" = "${var.name}-tlsstore"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "defaultCertificate" = {
+        "secretName" = var.certificate-secret-name
+      }
+    }
+  }
+}

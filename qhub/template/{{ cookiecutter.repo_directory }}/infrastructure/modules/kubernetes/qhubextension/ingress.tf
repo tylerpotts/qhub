@@ -31,7 +31,7 @@ resource "kubernetes_manifest" "qhubextension-ingressroute" {
           ]
         }
       ]
-      tls = local.tls
+      tls = {}
     }
   }
 }
