@@ -227,7 +227,9 @@ resource "kubernetes_deployment" "main" {
             # working. Fetch logs of the pod.
             "--log.level=${var.loglevel}",
             ], var.enable-certificates ? [
-            "--certificatesresolvers.default.acme.tlschallenge",
+            # "--certificatesresolvers.default.acme.tlschallenge",
+            "--certificatesresolvers.default.acme.dnschallenge.provider=cloudflare",
+            "--certificatesresolvers.default.acme.dnschallenge.delaybeforecheck=0",
             "--certificatesresolvers.default.acme.email=${var.acme-email}",
             "--certificatesresolvers.default.acme.storage=acme.json",
             "--certificatesresolvers.default.acme.caserver=${var.acme-server}",
