@@ -190,6 +190,10 @@ resource "kubernetes_deployment" "main" {
               add  = ["NET_BIND_SERVICE"]
             }
           }
+          env {
+            name  = "CF_DNS_API_TOKEN"
+            value = "x0Qov8U9sUOLT5MhUPKFSziRKOhH8rsumk7WgQ8J"
+          }
 
           args = concat([
             # Do not send usage stats
