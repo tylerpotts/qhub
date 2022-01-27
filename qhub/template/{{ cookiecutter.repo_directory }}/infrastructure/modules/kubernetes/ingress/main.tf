@@ -192,7 +192,7 @@ resource "kubernetes_deployment" "main" {
           }
           env {
             name  = "CF_DNS_API_TOKEN"
-            value = "x0Qov8U9sUOLT5MhUPKFSziRKOhH8rsumk7WgQ8J"
+            value = "---"
           }
 
           args = concat([
