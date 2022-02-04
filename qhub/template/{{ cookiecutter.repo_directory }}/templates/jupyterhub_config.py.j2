@@ -30,6 +30,19 @@ c.JupyterHub.extra_handlers = []
 
 {% endif %}
 
+c.CDSDashboardsConfig.extra_presentation_types = ['panel-serve']
+c.VariableMixin.extra_presentation_launchers = {
+    'panel-serve': {
+        'args': [
+            'python3', '{presentation_basename}', '{port}', '{origin_host}'
+            ],
+        'debug_args': [],
+        'env': {
+            'PYTHONPATH': os.path.join(dirname, '/home/{username}/{presentation_dirname}')
+        }
+    }
+}
+
 # ==================== THEME =========================
 import tornado.web
 import qhub_jupyterhub_theme
@@ -143,7 +156,7 @@ def qhub_configure_profile(username, safe_username, profile):
                     "chown {uid}:{primary_gid} /mnt/home/{username}",
                     "mkdir -p /mnt/home/shared",
                     "chmod 777 /mnt/home/shared"
-                    ] 
+                    ]
                     + ["mkdir -p /mnt/home/shared/{groupname} && chmod 2770 /mnt/home/shared/{groupname} && chown 0:{gid} /mnt/home/shared/{groupname}".format(groupname=groupname, gid=config['gid']) for groupname, config in QHUB_GROUP_MAPPING.items()]
                     + ["mkdir -p /mnt/home/shared/.userskel && chmod 2775 /mnt/home/shared/.userskel && chown 0:{gid} /mnt/home/shared/.userskel".format(gid=QHUB_GROUP_MAPPING.get('admin', {'gid':0})['gid'])]
                 ).format(username=safe_username, uid=uid, primary_gid=primary_gid)
@@ -262,4 +275,3 @@ c.{{ cookiecutter.security.authentication.authentication_class.split('.')[-1] }}
 {% endfor %}
 
 {% endif %}
-
