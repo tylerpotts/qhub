@@ -1,6 +1,7 @@
 {% if cookiecutter.cdsdashboards.enabled %}
 
 # ================ CDSDASHBOARDS =====================
+import os
 c.JupyterHub.allow_named_servers = True
 from cdsdashboards.hubextension import cds_extra_handlers
 c.JupyterHub.extra_handlers = cds_extra_handlers
@@ -20,6 +21,19 @@ c.CDSDashboardsConfig.conda_envs = [
     "{{ cookiecutter.environments[key].name }}",
 {%- endfor %}
 ]
+
+c.CDSDashboardsConfig.extra_presentation_types = ['panel-serve']
+c.VariableMixin.extra_presentation_launchers = {
+    'panel-serve': {
+        'args': [
+            'python3', '{presentation_basename}', '{port}', '{origin_host}'
+            ],
+        'debug_args': [],
+        'env': {
+            'PYTHONPATH': os.path.join(os.path.dirname(__file__), '/home/{username}/{presentation_dirname}')
+        }
+    }
+}
 
 {% else %}
 
