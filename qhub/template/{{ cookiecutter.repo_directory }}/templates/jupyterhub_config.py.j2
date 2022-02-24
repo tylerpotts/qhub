@@ -43,6 +43,9 @@ c.VariableMixin.extra_presentation_launchers = {
 c.Spawner.debug = True
 c.VariableMixin.proxy_force_alive = True
 
+# 2022 02 04
+c.VariableMixin.proxy_websocket_max_message_size = 1024*1024*1024
+
 {% else %}
 
 c.JupyterHub.allow_named_servers = False
