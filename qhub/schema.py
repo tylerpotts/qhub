@@ -494,7 +494,7 @@ class JupyterHubTheme(Base):
     hub_title: str = "QHub"
     hub_subtitle: str = "Autoscaling Compute Environment"
     welcome: str = """Welcome to QHub. It is maintained by <a href="http://quansight.com">Quansight staff</a>. The hub's configuration is stored in a github repository based on <a href="https://github.com/Quansight/qhub/">https://github.com/Quansight/qhub/</a>. To provide feedback and report any technical problems, please use the <a href="https://github.com/Quansight/qhub/issues">github issue tracker</a>."""
-    logo: str = "/hub/custom/images/jupyter_qhub_logo.svg",
+    logo: str = "/hub/custom/images/jupyter_qhub_logo.svg"
     primary_color: str = "#4f4173"
     secondary_color: str = "#957da6"
     accent_color: str = "#32C574"
@@ -776,7 +776,7 @@ class QHubConfig(Base):
                 "cdsdashboards-singleuser==0.6.0",
             ]
         ),
-    },
+    }
     monitoring: Monitoring = Monitoring()
     clearml: ClearML = ClearML()
     tf_extensions: typing.List[QHubExtension] = []

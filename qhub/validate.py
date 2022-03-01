@@ -3,12 +3,8 @@ import pathlib
 
 from pydantic import ValidationError
 
-from qhub.exception import QHubException
+from qhub.exception import QHubValidationError
 from qhub.schema import QHubConfig
-
-
-class QHubValidationError(QHubException):
-    pass
 
 
 def parse_pydantic_validation_error(exception):

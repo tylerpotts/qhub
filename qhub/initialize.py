@@ -87,7 +87,6 @@ def render_config(
             project_name=project_name,
             auto_provision=auth_auto_provision,
             disable_prompt=disable_prompt)
-    print(type(auth_config), auth_config)
 
     qhub_config['security'] = schema.Security(
         authentication=auth_config)

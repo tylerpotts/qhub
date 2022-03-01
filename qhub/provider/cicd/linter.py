@@ -5,11 +5,11 @@ import contextlib
 
 import requests
 
+from qhub.exception import QHubValidationError
+
 
 @contextlib.contextmanager
 def comment_on_pr():
-    from qhub.validate import QHubValidationError
-
     try:
         yield
         message = textwrap.dedent(
