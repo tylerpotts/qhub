@@ -1,6 +1,5 @@
 from qhub.initialize import render_config
-from qhub.schema import ProviderEnum
-from qhub.utils import yaml
+from qhub import schema
 
 
 def create_init_subcommand(subparser):
@@ -9,7 +8,7 @@ def create_init_subcommand(subparser):
         "platform",
         help="Cloud to deploy qhub on",
         type=str,
-        choices=[_.value for _ in ProviderEnum],
+        choices=[_.value for _ in schema.ProviderEnum],
     )
     subparser.add_argument("--project", help="Name to assign to qhub resources")
     subparser.add_argument(
@@ -21,13 +20,14 @@ def create_init_subcommand(subparser):
     )
     subparser.add_argument(
         "--ci-provider",
-        choices=["github-actions", "gitlab-ci", "none"],
+        choices=[_.value for _ in schema.CiEnum],
+        default=schema.CiEnum.none.value,
         help="continuous integration to use for infrastructure as code",
     )
     subparser.add_argument(
         "--auth-provider",
-        choices=["github", "auth0", "password"],
-        default="github",
+        choices=[_.value for _ in schema.AuthenticationEnum],
+        default=schema.AuthenticationEnum.github.value,
         help="auth provider to use for authentication",
     )
     subparser.add_argument("--repository", help="Repository to initialize qhub")
@@ -43,8 +43,8 @@ def create_init_subcommand(subparser):
     )
     subparser.add_argument(
         "--terraform-state",
-        choices=["remote", "local", "existing"],
-        default="remote",
+        choices=[_.value for _ in schema.TerraformStateEnum],
+        default=schema.TerraformStateEnum.remote.value,
         help="Terraform state to be provisioned and stored remotely, locally on the filesystem, or using existing terraform state backend",
     )
     subparser.add_argument(
@@ -65,8 +65,7 @@ def create_init_subcommand(subparser):
 
 
 def handle_init(args):
-
-    config = render_config(
+    qhub_config = render_config(
         project_name=args.project,
         namespace=args.namespace,
         qhub_domain=args.domain,
@@ -82,10 +81,4 @@ def handle_init(args):
         ssl_cert_email=args.ssl_cert_email,
     )
 
-    try:
-        with open("qhub-config.yaml", "x") as f:
-            yaml.dump(config, f)
-    except FileExistsError:
-        raise ValueError(
-            "A qhub-config.yaml file already exists. Please move or delete it and try again."
-        )
+    qhub_config.to_file("qhub-config.yaml")

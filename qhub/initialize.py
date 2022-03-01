@@ -13,227 +13,13 @@ from qhub.provider.cicd import github
 from qhub.provider import git
 
 from qhub.utils import (
-    namestr_regex,
-    qhub_image_tag,
     check_cloud_credentials,
-    set_kubernetes_version,
 )
-from .version import __version__
+
+from qhub import schema
+from qhub.version import __version__
 
 logger = logging.getLogger(__name__)
-
-
-BASE_CONFIGURATION = {
-    "project_name": None,
-    "provider": None,
-    "domain": None,
-    "certificate": {
-        "type": "self-signed",
-    },
-    "security": {
-        "authentication": None,
-    },
-    "default_images": {
-        "jupyterhub": f"quansight/qhub-jupyterhub:{qhub_image_tag}",
-        "jupyterlab": f"quansight/qhub-jupyterlab:{qhub_image_tag}",
-        "dask_worker": f"quansight/qhub-dask-worker:{qhub_image_tag}",
-        "dask_gateway": f"quansight/qhub-dask-gateway:{qhub_image_tag}",
-    },
-    "storage": {"conda_store": "60Gi", "shared_filesystem": "100Gi"},
-    "theme": {
-        "jupyterhub": {
-            "hub_title": None,
-            "hub_subtitle": None,
-            "welcome": None,
-            "logo": "/hub/custom/images/jupyter_qhub_logo.svg",
-            "primary_color": "#4f4173",
-            "secondary_color": "#957da6",
-            "accent_color": "#32C574",
-            "text_color": "#111111",
-            "h1_color": "#652e8e",
-            "h2_color": "#652e8e",
-        }
-    },
-    "helm_extensions": [],
-    "monitoring": {
-        "enabled": True,
-    },
-    "cdsdashboards": {
-        "enabled": True,
-        "cds_hide_user_named_servers": True,
-        "cds_hide_user_dashboard_servers": False,
-    },
-}
-
-CICD_CONFIGURATION = {"type": "PLACEHOLDER", "branch": "main"}
-
-AUTH_PASSWORD = {
-    "type": "password",
-}
-
-AUTH_OAUTH_GITHUB = {
-    "type": "GitHub",
-    "config": {
-        "client_id": "PLACEHOLDER",
-        "client_secret": "PLACEHOLDER",
-    },
-}
-
-AUTH_OAUTH_AUTH0 = {
-    "type": "Auth0",
-    "config": {
-        "client_id": "PLACEHOLDER",
-        "client_secret": "PLACEHOLDER",
-        "auth0_subdomain": "PLACEHOLDER",
-    },
-}
-
-LOCAL = {
-    "node_selectors": {
-        "general": {
-            "key": "kubernetes.io/os",
-            "value": "linux",
-        },
-        "user": {
-            "key": "kubernetes.io/os",
-            "value": "linux",
-        },
-        "worker": {
-            "key": "kubernetes.io/os",
-            "value": "linux",
-        },
-    }
-}
-
-DIGITAL_OCEAN = {
-    "region": "nyc3",
-    "kubernetes_version": "PLACEHOLDER",
-    "node_groups": {
-        "general": {"instance": "g-4vcpu-16gb", "min_nodes": 1, "max_nodes": 1},
-        "user": {"instance": "g-2vcpu-8gb", "min_nodes": 1, "max_nodes": 5},
-        "worker": {"instance": "g-2vcpu-8gb", "min_nodes": 1, "max_nodes": 5},
-    },
-}
-# Digital Ocean image slugs are listed here https://slugs.do-api.dev/
-
-GOOGLE_PLATFORM = {
-    "project": "PLACEHOLDER",
-    "region": "us-central1",
-    "kubernetes_version": "PLACEHOLDER",
-    "node_groups": {
-        "general": {"instance": "n1-standard-4", "min_nodes": 1, "max_nodes": 1},
-        "user": {"instance": "n1-standard-2", "min_nodes": 0, "max_nodes": 5},
-        "worker": {"instance": "n1-standard-2", "min_nodes": 0, "max_nodes": 5},
-    },
-}
-
-AZURE = {
-    "region": "Central US",
-    "kubernetes_version": "PLACEHOLDER",
-    "node_groups": {
-        "general": {
-            "instance": "Standard_D4_v3",
-            "min_nodes": 1,
-            "max_nodes": 1,
-        },
-        "user": {"instance": "Standard_D2_v2", "min_nodes": 0, "max_nodes": 5},
-        "worker": {
-            "instance": "Standard_D2_v2",
-            "min_nodes": 0,
-            "max_nodes": 5,
-        },
-    },
-    "storage_account_postfix": "".join(
-        random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8)
-    ),
-}
-
-AMAZON_WEB_SERVICES = {
-    "region": "us-west-2",
-    "kubernetes_version": "PLACEHOLDER",
-    "node_groups": {
-        "general": {"instance": "m5.xlarge", "min_nodes": 1, "max_nodes": 1},
-        "user": {"instance": "m5.large", "min_nodes": 1, "max_nodes": 5},
-        "worker": {"instance": "m5.large", "min_nodes": 1, "max_nodes": 5},
-    },
-}
-
-DEFAULT_PROFILES = {
-    "jupyterlab": [
-        {
-            "display_name": "Small Instance",
-            "description": "Stable environment with 1 cpu / 4 GB ram",
-            "default": True,
-            "kubespawner_override": {
-                "cpu_limit": 1,
-                "cpu_guarantee": 0.75,
-                "mem_limit": "4G",
-                "mem_guarantee": "2.5G",
-            },
-        },
-        {
-            "display_name": "Medium Instance",
-            "description": "Stable environment with 2 cpu / 8 GB ram",
-            "kubespawner_override": {
-                "cpu_limit": 2,
-                "cpu_guarantee": 1.5,
-                "mem_limit": "8G",
-                "mem_guarantee": "5G",
-            },
-        },
-    ],
-    "dask_worker": {
-        "Small Worker": {
-            "worker_cores_limit": 1,
-            "worker_cores": 0.75,
-            "worker_memory_limit": "4G",
-            "worker_memory": "2.5G",
-            "worker_threads": 1,
-        },
-        "Medium Worker": {
-            "worker_cores_limit": 2,
-            "worker_cores": 1.5,
-            "worker_memory_limit": "8G",
-            "worker_memory": "5G",
-            "worker_threads": 2,
-        },
-    },
-}
-
-DEFAULT_ENVIRONMENTS = {
-    "environment-dask.yaml": {
-        "name": "dask",
-        "channels": ["conda-forge"],
-        "dependencies": [
-            "python",
-            "ipykernel",
-            "ipywidgets",
-            "qhub-dask ==0.3.13",
-            "python-graphviz",
-            "numpy",
-            "numba",
-            "pandas",
-        ],
-    },
-    "environment-dashboard.yaml": {
-        "name": "dashboard",
-        "channels": ["conda-forge"],
-        "dependencies": [
-            "python==3.9.7",
-            "ipykernel==6.4.1",
-            "ipywidgets==7.6.5",
-            "qhub-dask==0.3.13",
-            "param==1.11.1",
-            "python-graphviz==0.17",
-            "matplotlib==3.4.3",
-            "panel==0.12.4",
-            "voila==0.2.16",
-            "streamlit==1.0.0",
-            "dash==2.0.0",
-            "cdsdashboards-singleuser==0.6.0",
-        ],
-    },
-}
 
 
 def render_config(
@@ -251,161 +37,97 @@ def render_config(
     disable_prompt=False,
     ssl_cert_email=None,
 ):
-    config = BASE_CONFIGURATION.copy()
-    config["provider"] = cloud_provider
-
-    if ci_provider is not None and ci_provider != "none":
-        config["ci_cd"] = {"type": ci_provider, "branch": "main"}
-
-    if terraform_state is not None:
-        config["terraform_state"] = {"type": terraform_state}
-
-    config["theme"]["jupyterhub"]["hub_title"] = f"QHub - { project_name }"
-    config["theme"]["jupyterhub"][
-        "welcome"
-    ] = f"""Welcome to { qhub_domain }. It is maintained by <a href="http://quansight.com">Quansight staff</a>. The hub's configuration is stored in a github repository based on <a href="https://github.com/Quansight/qhub/">https://github.com/Quansight/qhub/</a>. To provide feedback and report any technical problems, please use the <a href="https://github.com/Quansight/qhub/issues">github issue tracker</a>."""
-
     if project_name is None and not disable_prompt:
         project_name = input("Provide project name: ")
-    config["project_name"] = project_name
-
-    if not re.match(namestr_regex, project_name):
-        raise ValueError(
-            "project name should contain only letters and hyphens/underscores (but not at the start or end)"
-        )
-
-    if namespace is not None:
-        config["namespace"] = namespace
-
-    if not re.match(namestr_regex, namespace):
-        raise ValueError(
-            "namespace should contain only letters and hyphens/underscores (but not at the start or end)"
-        )
 
     if qhub_domain is None and not disable_prompt:
         qhub_domain = input("Provide domain: ")
-    config["domain"] = qhub_domain
 
-    # In qhub_version only use major.minor.patch version - drop any pre/post/dev suffixes
-    config["qhub_version"] = __version__
+    auth_provider = schema.AuthenticationEnum(auth_provider)
+    ci_provider = schema.CiEnum(ci_provider)
+    cloud_provider = schema.ProviderEnum(cloud_provider)
 
-    # Generate default password for Keycloak root user and also example-user if using password auth
-    default_password = "".join(
-        secrets.choice(string.ascii_letters + string.digits) for i in range(16)
-    )
+    qhub_config = {
+        'project_name': project_name,
+        # In qhub_version only use major.minor.patch version - drop
+        # any pre/post/dev suffixes
+        "provider": cloud_provider.value,
+        "qhub_version": __version__,
+        'domain': qhub_domain,
+        'namespace': namespace or "dev",
+        "ci_cd": schema.CICD.qhub_initialize(ci_provider),
+        'theme': schema.Theme.qhub_initialize(qhub_domain, cloud_provider, project_name),
+    }
 
-    # Save default password to file
-    default_password_filename = os.path.join(
-        tempfile.gettempdir(), "QHUB_DEFAULT_PASSWORD"
-    )
-    with open(default_password_filename, "w") as f:
-        f.write(default_password)
-    os.chmod(default_password_filename, 0o700)
+    if cloud_provider == schema.ProviderEnum.local:
+        qhub_config['local'] = schema.LocalProvider()
+    elif cloud_provider == schema.ProviderEnum.gcp:
+        qhub_config['gcp'] = schema.GoogleCloudPlatformProvider(
+            kubernetes_version=kubernetes_version)
+    elif cloud_provider == schema.ProviderEnum.aws:
+        qhub_config['aws'] = schema.AmazonWebServicesProvider(
+            kubernetes_version=kubernetes_version)
+    elif cloud_provider == schema.ProviderEnum.azure:
+        qhub_config['azure'] = schema.AzureProvider(
+            kubernetes_version=kubernetes_version)
+    elif cloud_provider == schema.ProviderEnum.do:
+        qhub_config['do'] = schema.DigitalOceanProvider(
+            kubernetes_version=kubernetes_version)
 
-    print(
-        f"Securely generated default random password={default_password} for Keycloak root user stored at path={default_password_filename}"
-    )
+    if auth_provider == schema.AuthenticationEnum.password:
+        auth_config = schema.PasswordAuthentication.qhub_initialize()
+    elif auth_provider == schema.AuthenticationEnum.github:
+        auth_config = schema.GitHubAuthentication.qhub_initialize(
+            qhub_domain=qhub_domain,
+            auto_provision=auth_auto_provision,
+            disable_prompt=disable_prompt)
+    elif auth_provider == schema.AuthenticationEnum.auth0:
+        auth_config = schema.Auth0Authentication.qhub_initialize(
+            qhub_domain=qhub_domain,
+            project_name=project_name,
+            auto_provision=auth_auto_provision,
+            disable_prompt=disable_prompt)
+    print(type(auth_config), auth_config)
 
-    if auth_provider == "github":
-        config["security"]["authentication"] = AUTH_OAUTH_GITHUB.copy()
-        print(
-            "Visit https://github.com/settings/developers and create oauth application"
+    qhub_config['security'] = schema.Security(
+        authentication=auth_config)
+
+    if terraform_state is not None:
+        qhub_config["terraform_state"] = schema.TerraformState(
+            type=schema.TerraformStateEnum(terraform_state)
         )
-        print(f"  set the homepage to: https://{qhub_domain}/")
-        print(
-            f"  set the callback_url to: https://{qhub_domain}/auth/realms/qhub/broker/github/endpoint"
-        )
 
-        if not disable_prompt:
-            config["security"]["authentication"]["config"]["client_id"] = input(
-                "Github client_id: "
-            )
-            config["security"]["authentication"]["config"]["client_secret"] = input(
-                "Github client_secret: "
-            )
-    elif auth_provider == "auth0":
-        config["security"]["authentication"] = AUTH_OAUTH_AUTH0.copy()
+    # # Save default password to file
+    # default_password_filename = os.path.join(
+    #     tempfile.gettempdir(), "QHUB_DEFAULT_PASSWORD"
+    # )
+    # with open(default_password_filename, "w") as f:
+    #     f.write(default_password)
+    # os.chmod(default_password_filename, 0o700)
 
-    elif auth_provider == "password":
-        config["security"]["authentication"] = AUTH_PASSWORD.copy()
-
-    # Always use default password for keycloak root
-    config["security"].setdefault("keycloak", {})[
-        "initial_root_password"
-    ] = default_password
-
-    if cloud_provider == "do":
-        config["theme"]["jupyterhub"][
-            "hub_subtitle"
-        ] = "Autoscaling Compute Environment on Digital Ocean"
-        config["digital_ocean"] = DIGITAL_OCEAN.copy()
-        set_kubernetes_version(config, kubernetes_version, cloud_provider)
-
-    elif cloud_provider == "gcp":
-        config["theme"]["jupyterhub"][
-            "hub_subtitle"
-        ] = "Autoscaling Compute Environment on Google Cloud Platform"
-        config["google_cloud_platform"] = GOOGLE_PLATFORM.copy()
-        set_kubernetes_version(config, kubernetes_version, cloud_provider)
-
-        if "PROJECT_ID" in os.environ:
-            config["google_cloud_platform"]["project"] = os.environ["PROJECT_ID"]
-        elif not disable_prompt:
-            config["google_cloud_platform"]["project"] = input(
-                "Enter Google Cloud Platform Project ID: "
-            )
-
-    elif cloud_provider == "azure":
-        config["theme"]["jupyterhub"][
-            "hub_subtitle"
-        ] = "Autoscaling Compute Environment on Azure"
-        config["azure"] = AZURE.copy()
-        set_kubernetes_version(config, kubernetes_version, cloud_provider)
-
-    elif cloud_provider == "aws":
-        config["theme"]["jupyterhub"][
-            "hub_subtitle"
-        ] = "Autoscaling Compute Environment on Amazon Web Services"
-        config["amazon_web_services"] = AMAZON_WEB_SERVICES.copy()
-        set_kubernetes_version(config, kubernetes_version, cloud_provider)
-        if "AWS_DEFAULT_REGION" in os.environ:
-            config["amazon_web_services"]["region"] = os.environ["AWS_DEFAULT_REGION"]
-    elif cloud_provider == "local":
-        config["theme"]["jupyterhub"][
-            "hub_subtitle"
-        ] = "Autoscaling Compute Environment"
-        config["local"] = LOCAL.copy()
-
-    config["profiles"] = DEFAULT_PROFILES.copy()
-    config["environments"] = DEFAULT_ENVIRONMENTS.copy()
+    # print(
+    #     f"Securely generated default random password={default_password} for Keycloak root user stored at path={default_password_filename}"
+    # )
 
     if ssl_cert_email is not None:
-        if not re.match("^[^ @]+@[^ @]+\\.[^ @]+$", ssl_cert_email):
-            raise ValueError("ssl-cert-email should be a valid email address")
-        config["certificate"] = {
-            "type": "lets-encrypt",
-            "acme_email": ssl_cert_email,
-            "acme_server": "https://acme-v02.api.letsencrypt.org/directory",
-        }
+        qhub_config["certificate"] = schema.Certificate(
+            type=schema.CertificateEnum.letsencrypt,
+            acme_email=ssl_cert_email)
 
-    if auth_auto_provision:
-        if auth_provider == "auth0":
-            auth0_auto_provision(config)
+    # if repository_auto_provision:
+    #     GITHUB_REGEX = "(https://)?github.com/([^/]+)/([^/]+)/?"
+    #     if re.search(GITHUB_REGEX, repository):
+    #         match = re.search(GITHUB_REGEX, repository)
+    #         git_repository = github_auto_provision(
+    #             config, match.group(2), match.group(3)
+    #         )
+    #         git_repository_initialize(git_repository)
+    #     else:
+    #         raise ValueError(
+    #             f"Repository to be auto-provisioned is not the full URL of a GitHub repo: {repository}"
+    #         )
 
-    if repository_auto_provision:
-        GITHUB_REGEX = "(https://)?github.com/([^/]+)/([^/]+)/?"
-        if re.search(GITHUB_REGEX, repository):
-            match = re.search(GITHUB_REGEX, repository)
-            git_repository = github_auto_provision(
-                config, match.group(2), match.group(3)
-            )
-            git_repository_initialize(git_repository)
-        else:
-            raise ValueError(
-                f"Repository to be auto-provisioned is not the full URL of a GitHub repo: {repository}"
-            )
-
-    return config
+    return schema.QHubConfig(**qhub_config)
 
 
 def github_auto_provision(config, owner, repo):

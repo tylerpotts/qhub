@@ -1,9 +1,5 @@
 import pathlib
 
-from qhub.schema import verify
-from qhub.provider.cicd.linter import comment_on_pr
-from qhub.utils import load_yaml
-
 
 def create_validate_subcommand(subparser):
     subparser = subparser.add_parser("validate")
@@ -22,6 +18,9 @@ def create_validate_subcommand(subparser):
 
 
 def handle_validate(args):
+    from qhub.provider.cicd.linter import comment_on_pr
+    from qhub.validate import verify
+
     if args.configdeprecated and args.config:
         raise ValueError(
             "Please pass in -c/--config flag specifying your qhub-config.yaml file, and do NOT pass it as a standalone argument"
@@ -39,10 +38,8 @@ def handle_validate(args):
             f"passed in configuration filename={config_filename} must exist"
         )
 
-    config = load_yaml(config_filename)
-
     if args.enable_commenting:
-        # for PR's only
-        comment_on_pr(config)
+        with comment_on_pr():
+            verify(config_filename)
     else:
-        verify(config)
+        verify(config_filename)

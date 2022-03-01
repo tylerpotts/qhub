@@ -3,6 +3,7 @@ import functools
 
 import requests
 
+# Digital Ocean image slugs, kubernetes versions etc. are listed here https://slugs.do-api.dev/
 
 def digital_ocean_request(url, method="GET", json=None):
     BASE_DIGITALOCEAN_URL = "https://api.digitalocean.com/v2/"
