@@ -13,6 +13,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   kubernetes_version = var.kubernetes_version
   default_node_pool {
     name                = var.node_groups[0].name
+    vnet_subnet_id      = var.subnet_id
     node_count          = 1
     vm_size             = var.node_groups[0].instance_type
     enable_auto_scaling = "true"
@@ -33,11 +34,14 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   tags = var.tags
 
-  role_based_access_control {
-    enabled = var.rbac_enabled
-    azure_active_directory {
-      managed =  var.admin_group_object_ids != [] ? true : false
-      admin_group_object_ids = var.admin_group_object_ids
+  dynamic role_based_access_control {
+    for_each = var.rbac_enabled == true ? [1] : []
+    content {
+      enabled = var.rbac_enabled
+      azure_active_directory {
+        managed =  var.admin_group_object_ids != [] ? true : false
+        admin_group_object_ids = var.admin_group_object_ids
+      }
     }
   }
 }
@@ -45,6 +49,7 @@ resource "azurerm_kubernetes_cluster" "main" {
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool
 resource "azurerm_kubernetes_cluster_node_pool" "user_node_group" {
   name                  = var.node_groups[1].name
+  vnet_subnet_id        = var.subnet_id
   kubernetes_cluster_id = azurerm_kubernetes_cluster.main.id
   vm_size               = var.node_groups[1].instance_type
   node_count            = 0
@@ -62,6 +67,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_node_group" {
 
 resource "azurerm_kubernetes_cluster_node_pool" "worker_node_group" {
   name                  = var.node_groups[2].name
+  vnet_subnet_id        = var.subnet_id
   kubernetes_cluster_id = azurerm_kubernetes_cluster.main.id
   vm_size               = var.node_groups[2].instance_type
   node_count            = 0

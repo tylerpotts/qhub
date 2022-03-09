@@ -49,13 +49,19 @@ class Base(pydantic.BaseModel):
         extra = "forbid"
 
 
+class AzureVnet(Base):
+    name: typing.Optional[str]
+    subnet_name: typing.Optional[str]
+    vnet_resource_group: typing.Optional[str]
+
+
 class LoadBalancer(Base):
     annotations: typing.Optional[typing.Dict[str, str]]
     ip_adress: typing.Optional[ipaddress.IPv4Address]
 
 
 class RBAC(Base):
-    enabled: bool
+    enabled: bool = False
     azure_active_directory: typing.Optional[typing.Dict[typing.Any, typing.Any]]
 
 
@@ -263,6 +269,7 @@ class AzureProvider(Base):
     kubernetes_version: str
     node_groups: typing.Dict[str, NodeGroup]
     storage_account_postfix: str
+    vnet: typing.Optional[AzureVnet]
     internal_load_balancer: typing.Optional[LoadBalancer]
     role_based_access_control: typing.Optional[RBAC]
     tags: typing.Optional[typing.Dict[str, str]]

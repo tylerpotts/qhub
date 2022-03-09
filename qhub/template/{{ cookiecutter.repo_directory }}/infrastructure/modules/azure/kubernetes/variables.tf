@@ -53,6 +53,18 @@ variable "admin_group_object_ids" {
   default = []
 }
 
+variable "vnet_id" {
+  description = "Id of the pre-existing VNET"
+  type        = string
+  default     = ""
+}
+
+variable "subnet_id" {
+  description = "Id of the pre-existing subnet"
+  type        = string
+  default     = ""
+}
+
 # {% if cookiecutter.azure.rbac.enabled %}
 #   variable "AdminGroupObjectIDs" {
 #     description = "RBAC Admin settings"

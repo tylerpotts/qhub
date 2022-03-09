@@ -124,6 +124,11 @@
                 "max_nodes": null
             }
         },
+        "vnet": {
+            "name": null,
+            "subnet_name": null,
+            "vnet_resource_group": null
+        },
         "internal_load_balancer": {
             "ip_adress": null,
             "annotations": null

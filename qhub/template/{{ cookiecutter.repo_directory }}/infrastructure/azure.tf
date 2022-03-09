@@ -2,6 +2,21 @@ provider "azurerm" {
   features {}
 }
 
+{% if cookiecutter.azure.vnet is defined %}
+# Import existing vnet
+data "azurerm_virtual_network" "qhub-aks-vnet" {
+  name                = "{{ cookiecutter.azure.vnet.name }}"
+  resource_group_name = "{{ cookiecutter.azure.vnet.vnet_resource_group }}"
+}
+
+#subnet
+resource "azurerm_subnet" "qhub-aks-subnet" {
+  name                 = "{{ cookiecutter.azure.vnet.subnet_name }}"
+  resource_group_name  = data.azurerm_virtual_network.qhub-aks-vnet.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.qhub-aks-vnet.name
+  address_prefixes     = ["10.240.0.0/16"]
+}
+{% endif %}
 
 module "registry" {
   source              = "./modules/azure/registry"
@@ -28,6 +43,12 @@ module "kubernetes" {
   node_resource_group_name = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}-node-resource-group"
   kubernetes_version       = "{{ cookiecutter.azure.kubernetes_version }}"
 
+
+{% if cookiecutter.azure.vnet is defined %}
+  vnet_id                  = data.azurerm_virtual_network.qhub-aks-vnet.id
+  subnet_id                = azurerm_subnet.qhub-aks-subnet.id
+{% endif %}
+
   node_groups = [
 {% for nodegroup, nodegroup_config in cookiecutter.azure.node_groups.items() %}
     {
@@ -49,7 +70,7 @@ module "kubernetes" {
 {% endif %}
 
 {% if cookiecutter.azure.role_based_access_control is defined %}
-rbac_enabled = true
+rbac_enabled = {{ cookiecutter.azure.role_based_access_control.enabled }}
 {% if cookiecutter.azure.role_based_access_control.azure_active_directory is defined %}
 admin_group_object_ids = {{ cookiecutter.azure.role_based_access_control.azure_active_directory.admin_group_object_ids | jsonify }}
 {% endif %}
