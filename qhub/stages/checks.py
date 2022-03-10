@@ -105,16 +105,22 @@ def stage_04_kubernetes_ingress(stage_outputs, qhub_config):
     host = ip_or_name["hostname"] or ip_or_name["ip"]
     host = host.strip("\n")
 
-    for port in tcp_ports:
-        if not _attempt_tcp_connect(host, port):
-            print(
-                f"ERROR: After stage directory={directory} unable to connect to ingress host={host} port={port}"
-            )
-            sys.exit(1)
+    if qhub_config["internal_load_balancer"]["enabled"]:
+        print(
+            f"TCP ports check skipped due to internal load balancer, after stage directory={directory}"
+        )
+        pass
+    else:
+        for port in tcp_ports:
+            if not _attempt_tcp_connect(host, port):
+                print(
+                    f"ERROR: After stage directory={directory} unable to connect to ingress host={host} port={port}"
+                )
+                sys.exit(1)
 
-    print(
-        f"After stage directory={directory} kubernetes ingress available on tcp ports={tcp_ports}"
-    )
+        print(
+            f"After stage directory={directory} kubernetes ingress available on tcp ports={tcp_ports}"
+        )
 
 
 def check_ingress_dns(stage_outputs, config, disable_prompt):

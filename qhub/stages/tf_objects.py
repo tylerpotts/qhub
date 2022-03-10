@@ -17,7 +17,15 @@ def QHubGCPProvider(qhub_config: Dict):
 
 
 def QHubAzureProvider(qhub_config: Dict):
-    return Provider("azurerm", features={})
+    return deep_merge(
+        Data(
+            "azurerm_virtual_network",
+            "qhub-aks-vnet",
+            name=qhub_config["azure"]["vnet"]["vnet_name"],
+            resource_group_name=qhub_config["azure"]["vnet"]["vnet_resource_group"]
+            ),
+        Provider("azurerm", features={})
+        )
 
 
 def QHubDigitalOceanProvider(qhub_config: Dict):
@@ -163,6 +171,7 @@ def stage_02_infrastructure(config):
         return {
             "stages/02-infrastructure/azure/_qhub.tf.json": tf_render_objects(
                 [
+                    QHubAzureProvider(config),
                     QHubTerraformState("02-infrastructure", config),
                 ]
             ),
