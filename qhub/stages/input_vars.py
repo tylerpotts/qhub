@@ -29,6 +29,7 @@ def stage_01_terraform_state(stage_outputs, config):
             "region": config["azure"]["region"],
             "storage_account_postfix": config["azure"]["storage_account_postfix"],
             "state_resource_group_name": f'{config["project_name"]}-{config["namespace"]}-state',
+            "tags": config["azure"].get("tags", {}),
         }
     else:
         return {}

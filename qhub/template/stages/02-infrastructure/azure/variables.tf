@@ -66,3 +66,9 @@ variable "subnet_name" {
   type        = string
   default     = "subnet-qhubapp-0001"
 }
+
+variable "tags" {
+  description = "A mapping of tags to be assigned to the resources"
+  type        = map(any)
+  default     = {}
+}

@@ -55,3 +55,9 @@ variable "subnet_name" {
   description = "The name of the Subnet"
   type        = string
 }
+
+variable "tags" {
+  description = "A mapping of tags to be assigned to the resources"
+  type        = map(any)
+  default     = {}
+}
