@@ -1,6 +1,8 @@
 resource "azurerm_resource_group" "terraform-state-resource-group" {
   name     = var.resource_group_name
   location = var.location
+
+  tags = var.tags
 }
 
 resource "azurerm_storage_account" "terraform-state-storage-account" {
@@ -14,10 +16,14 @@ resource "azurerm_storage_account" "terraform-state-storage-account" {
   identity {
     type = "SystemAssigned"
   }
+
+  tags = var.tags
 }
 
 resource "azurerm_storage_container" "storage_container" {
   name                  = "${var.name}-state"
   storage_account_name  = azurerm_storage_account.terraform-state-storage-account.name
   container_access_type = "private"
+
+  tags = var.tags
 }
