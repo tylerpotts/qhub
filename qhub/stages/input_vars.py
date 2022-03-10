@@ -81,9 +81,17 @@ def stage_02_infrastructure(stage_outputs, config):
             ),
             "resource_group_name": f'{config["project_name"]}-{config["namespace"]}',
             "node_resource_group_name": f'{config["project_name"]}-{config["namespace"]}-node-resource-group',
-            "vnet_name" : config["azure"].get("vnet", {}).get("vnet_name", ""),
-            "subnet_name" : config["azure"].get("vnet", {}).get("subnet_name", ""),
-            "vnet_resource_group" : config["azure"].get("vnet", {}).get("vnet_resource_group", ""),
+            # Azure Vnet configuration
+            "enable_existing_vnet": config["azure"].get("enable_existing_vnet", False),
+            "vnet_name": config["azure"]
+            .get("vnet", {})
+            .get("vnet_name", "vnet-qhubapp-0001"),
+            "subnet_name": config["azure"]
+            .get("vnet", {})
+            .get("subnet_name", "subnet-qhubapp-0001"),
+            "vnet_resource_group": config["azure"]
+            .get("vnet", {})
+            .get("vnet_resource_group", ""),
         }
     elif config["provider"] == "aws":
         return {
@@ -156,9 +164,15 @@ def stage_04_kubernetes_ingress(stage_outputs, config):
         "certificate-secret-name": config["certificate"]["secret_name"]
         if config["certificate"]["type"] == "existing"
         else None,
-        "internal-load_balancer-enabled": config.get("internal_load_balancer", {}).get("enabled", False),
-        "internal-load_balancer-ip_adress": config.get("internal_load_balancer", {}).get("ip_adress", "null"),
-        "internal-load_balancer-annotations": config.get("internal_load_balancer", {}).get("annotations", {}),
+        "internal-load_balancer-enabled": config.get("internal_load_balancer", {}).get(
+            "enabled", False
+        ),
+        "internal-load_balancer-ip_adress": config.get(
+            "internal_load_balancer", {}
+        ).get("ip_adress", "null"),
+        "internal-load_balancer-annotations": config.get(
+            "internal_load_balancer", {}
+        ).get("annotations", {}),
     }
 
 
