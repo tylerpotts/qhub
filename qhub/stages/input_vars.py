@@ -83,7 +83,7 @@ def stage_02_infrastructure(stage_outputs, config):
             "resource_group_name": f'{config["project_name"]}-{config["namespace"]}',
             "node_resource_group_name": f'{config["project_name"]}-{config["namespace"]}-node-resource-group',
             # Azure Vnet configuration
-            "enable_existing_vnet": config["azure"].get("enable_existing_vnet", False),
+            "enable_existing_vnet": config["azure"].get("vnet", {}).get("enable_existing_vnet", False),
             "vnet_name": config["azure"]
             .get("vnet", {})
             .get("vnet_name", "vnet-qhubapp-0001"),
