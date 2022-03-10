@@ -38,3 +38,21 @@ variable "certificate-secret-name" {
   description = "Kubernetes secret used for certificate"
   default     = ""
 }
+
+variable "internal-load_balancer-enabled" {
+  description = "Enables internal load balancing"
+  type = bool
+  default = false
+}
+
+variable "internal-load_balancer-ip_adress" {
+  description = "Set the IP addresses to associate with an internal load balancer"
+  type = string
+  default = null
+}
+
+variable "internal-load_balancer-annotations" {
+  description = "Load Balancer service annotations"
+  type = map(any)
+  default = {}
+}

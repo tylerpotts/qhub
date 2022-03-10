@@ -58,3 +58,15 @@ variable "certificate-secret-name" {
   type        = string
   default     = null
 }
+
+variable "load_balancer_ip_address" {
+  description = "Set the IP addresses to associate with an internal load balancer"
+  type = string
+  default = null
+}
+
+variable "load_balancer_annotations" {
+  description = "Load Balancer service annotations"
+  type = map(any)
+  default = {}
+}

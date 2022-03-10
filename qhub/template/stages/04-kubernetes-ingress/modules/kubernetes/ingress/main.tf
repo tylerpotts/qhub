@@ -61,6 +61,7 @@ resource "kubernetes_service" "main" {
   metadata {
     name      = "${var.name}-traefik-ingress"
     namespace = var.namespace
+    annotations = var.load_balancer_annotations
   }
 
   spec {
@@ -111,6 +112,8 @@ resource "kubernetes_service" "main" {
     }
 
     type = "LoadBalancer"
+
+    # load_balancer_ip = var.load_balancer_ip_address
   }
 }
 

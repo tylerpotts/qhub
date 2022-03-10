@@ -1,5 +1,7 @@
+from cgitb import enable
 import enum
 import typing
+import ipaddress
 from abc import ABC
 
 import pydantic
@@ -47,6 +49,17 @@ class Base(pydantic.BaseModel):
     class Config:
         extra = "forbid"
 
+
+class LoadBalancer(Base):
+    enabled     : typing.Optional[bool] = False
+    annotations : typing.Optional[typing.Dict[str, str]]
+    ip_adress   : typing.Optional[ipaddress.IPv4Address]
+
+
+class AzureVnet(Base):
+    vnet_name: typing.Optional[str]
+    subnet_name: typing.Optional[str]
+    vnet_resource_group: typing.Optional[str]
 
 # ============== CI/CD =============
 
@@ -248,7 +261,9 @@ class AzureProvider(Base):
     kubernetes_version: str
     node_groups: typing.Dict[str, NodeGroup]
     storage_account_postfix: str
-
+    vnet: typing.Optional[AzureVnet]
+    # role_based_access_control: typing.Optional[RBAC]
+    tags: typing.Optional[typing.Dict[str, str]]
 
 class AmazonWebServicesProvider(Base):
     region: str
@@ -419,6 +434,7 @@ class Main(Base):
     prefect: typing.Optional[Prefect]
     cdsdashboards: CDSDashboards
     security: Security
+    internal_load_balancer: typing.Optional[LoadBalancer]
     external_container_reg: typing.Optional[ExtContainerReg]
     default_images: DefaultImages
     storage: typing.Dict[str, str]

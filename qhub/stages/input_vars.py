@@ -75,11 +75,15 @@ def stage_02_infrastructure(stage_outputs, config):
             "region": config["azure"]["region"],
             "kubernetes_version": config["azure"]["kubernetes_version"],
             "node_groups": config["azure"]["node_groups"],
+            "tags": config["azure"].get("tags", {}),
             "kubeconfig_filename": os.path.join(
                 tempfile.gettempdir(), "QHUB_KUBECONFIG"
             ),
             "resource_group_name": f'{config["project_name"]}-{config["namespace"]}',
             "node_resource_group_name": f'{config["project_name"]}-{config["namespace"]}-node-resource-group',
+            "vnet_name" : config["azure"].get("vnet", {}).get("vnet_name", ""),
+            "subnet_name" : config["azure"].get("vnet", {}).get("subnet_name", ""),
+            "vnet_resource_group" : config["azure"].get("vnet", {}).get("vnet_resource_group", ""),
         }
     elif config["provider"] == "aws":
         return {
@@ -152,6 +156,9 @@ def stage_04_kubernetes_ingress(stage_outputs, config):
         "certificate-secret-name": config["certificate"]["secret_name"]
         if config["certificate"]["type"] == "existing"
         else None,
+        "internal-load_balancer-enabled": config.get("internal_load_balancer", {}).get("enabled", False),
+        "internal-load_balancer-ip_adress": config.get("internal_load_balancer", {}).get("ip_adress", "null"),
+        "internal-load_balancer-annotations": config.get("internal_load_balancer", {}).get("annotations", {}),
     }
 
 
@@ -237,6 +244,7 @@ def stage_07_kubernetes_services(stage_outputs, config):
             .get("hub", {})
             .get("extraEnv", [])
         ),
+        "jupyterhub-logout-redirect-url": final_logout_uri,
         # dask-gateway
         "dask-gateway-image": _split_docker_image_name(
             config["default_images"]["dask_gateway"]
@@ -260,7 +268,6 @@ def stage_07_kubernetes_services(stage_outputs, config):
         "clearml-overrides": [
             json.dumps(config.get("clearml", {}).get("overrides", {}))
         ],
-        "jupyterhub-logout-redirect-url": final_logout_uri,
     }
 
 
