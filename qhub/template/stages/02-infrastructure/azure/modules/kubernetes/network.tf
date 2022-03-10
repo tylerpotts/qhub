@@ -9,8 +9,7 @@ resource "azurerm_virtual_network" "qhub_vnet" {
 
   name                = var.vnet_name
   location            = var.location
-  # need to use node_resource_group_name, as LB is in the same resource group
-  resource_group_name = var.node_resource_group_name
+  resource_group_name = var.resource_group_name
   address_space       = ["10.0.0.0/8"]
 
   tags = var.tags
@@ -20,7 +19,7 @@ resource "azurerm_subnet" "qhub_subnet" {
   count = local.count_index
 
   name                 = var.subnet_name
-  resource_group_name  = var.node_resource_group_name
+  resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.qhub_vnet[0].name
   address_prefixes     = ["10.240.0.0/16"]
 }
