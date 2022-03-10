@@ -92,7 +92,7 @@ def stage_02_infrastructure(stage_outputs, config):
             .get("subnet_name", "subnet-qhubapp-0001"),
             "vnet_resource_group": config["azure"]
             .get("vnet", {})
-            .get("vnet_resource_group", ""),
+            .get("vnet_resource_group", "sg-vnet-qhubapp"),
         }
     elif config["provider"] == "aws":
         return {
