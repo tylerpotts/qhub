@@ -34,3 +34,24 @@ variable "node_groups" {
   description = "Node pools to add to Azure Kubernetes Cluster"
   type        = list(map(any))
 }
+
+variable "enable_existing_vnet" {
+  description = "Specifies whether to use an existing Virtual Network"
+  type        = boolean
+  default     = false
+}
+
+variable "vnet_security_group_name" {
+  description = "The name of the VNet Security Group"
+  type        = string
+}
+
+variable "vnet_name" {
+  description = "The name of the VNet"
+  type        = string
+}
+
+variable "subnet_name" {
+  description = "The name of the Subnet"
+  type        = string
+}

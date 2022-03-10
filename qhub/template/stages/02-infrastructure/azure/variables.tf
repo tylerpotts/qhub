@@ -42,3 +42,27 @@ variable "node_resource_group_name" {
   description = "The name of the Resource Group where the Kubernetes Nodes should exist"
   type        = string
 }
+
+variable "enable_existing_vnet" {
+  description = "Specifies whether to use an existing Virtual Network"
+  type        = boolean
+  default     = false
+}
+
+variable "vnet_resource_group" {
+  description = "The name of the VNet Security Group"
+  type        = string
+  default     = ""
+}
+
+variable "vnet_name" {
+  description = "The name of the VNet"
+  type        = string
+  default     = "vnet-qhubapp-0001"
+}
+
+variable "subnet_name" {
+  description = "The name of the Subnet"
+  type        = string
+  default     = "subnet-qhubapp-0001"
+}

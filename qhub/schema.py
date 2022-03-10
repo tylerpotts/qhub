@@ -1,4 +1,3 @@
-from cgitb import enable
 import enum
 import typing
 import ipaddress
@@ -51,15 +50,17 @@ class Base(pydantic.BaseModel):
 
 
 class LoadBalancer(Base):
-    enabled     : typing.Optional[bool] = False
-    annotations : typing.Optional[typing.Dict[str, str]]
-    ip_adress   : typing.Optional[ipaddress.IPv4Address]
+    enabled: typing.Optional[bool] = False
+    annotations: typing.Optional[typing.Dict[str, str]]
+    ip_adress: typing.Optional[ipaddress.IPv4Address]
 
 
 class AzureVnet(Base):
+    enable_existing_vnet: typing.Optional[bool] = False
     vnet_name: typing.Optional[str]
     subnet_name: typing.Optional[str]
     vnet_resource_group: typing.Optional[str]
+
 
 # ============== CI/CD =============
 
@@ -264,6 +265,7 @@ class AzureProvider(Base):
     vnet: typing.Optional[AzureVnet]
     # role_based_access_control: typing.Optional[RBAC]
     tags: typing.Optional[typing.Dict[str, str]]
+
 
 class AmazonWebServicesProvider(Base):
     region: str
