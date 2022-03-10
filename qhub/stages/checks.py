@@ -105,9 +105,9 @@ def stage_04_kubernetes_ingress(stage_outputs, qhub_config):
     host = ip_or_name["hostname"] or ip_or_name["ip"]
     host = host.strip("\n")
 
-    if qhub_config["internal_load_balancer"]["enabled"]:
+    if qhub_config.get("internal_load_balancer", {}).get("enabled", False):
         print(
-            f"TCP ports check skipped due to internal load balancer, after stage directory={directory}"
+            f"TCP ports checks skipped due to internal load balancer, after stage directory={directory}"
         )
         pass
     else:
