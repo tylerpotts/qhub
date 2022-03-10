@@ -45,7 +45,7 @@ variable "node_resource_group_name" {
 
 variable "enable_existing_vnet" {
   description = "Specifies whether to use an existing Virtual Network"
-  type        = boolean
+  type        = bool
   default     = false
 }
 
