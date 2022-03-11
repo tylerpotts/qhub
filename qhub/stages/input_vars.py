@@ -83,7 +83,9 @@ def stage_02_infrastructure(stage_outputs, config):
             "resource_group_name": f'{config["project_name"]}-{config["namespace"]}',
             "node_resource_group_name": f'{config["project_name"]}-{config["namespace"]}-node-resource-group',
             # Azure Vnet configuration
-            "enable_existing_vnet": config["azure"].get("vnet", {}).get("enable_existing_vnet", False),
+            "enable_existing_vnet": config["azure"]
+            .get("vnet", {})
+            .get("enable_existing_vnet", False),
             "vnet_name": config["azure"]
             .get("vnet", {})
             .get("vnet_name", "vnet-qhubapp-0001"),
@@ -170,7 +172,7 @@ def stage_04_kubernetes_ingress(stage_outputs, config):
         ),
         "internal-load_balancer-ip_adress": config.get(
             "internal_load_balancer", {}
-        ).get("ip_adress", "null"),
+        ).get("ip_adress"),
         "internal-load_balancer-annotations": config.get(
             "internal_load_balancer", {}
         ).get("annotations", {}),
