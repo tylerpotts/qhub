@@ -113,7 +113,7 @@ resource "kubernetes_service" "main" {
 
     type = "LoadBalancer"
 
-    # load_balancer_ip = var.load_balancer_ip_address
+    load_balancer_ip = var.load_balancer_ip_address ? var.load_balancer_ip_address : null
   }
 }
 
