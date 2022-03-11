@@ -63,6 +63,8 @@ class AzureVnet(Base):
 
 
 class AzureOverview(Base):
+    resource_group_name: typing.Optional[str]
+    resource_node_group_name: typing.Optional[str]
     network: typing.Optional[AzureVnet]
     # role_based_access_control: typing.Optional[RBAC]
 
