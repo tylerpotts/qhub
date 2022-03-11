@@ -26,7 +26,7 @@ module "kubernetes" {
   resource_group_name      = azurerm_resource_group.resource_group.name
   # Azure requires that a new, non-existent Resource Group is used, as otherwise
   # the provisioning of the Kubernetes Service will fail.
-  node_resource_group_name = var.node_resource_group_name
+  resource_node_group_name = var.resource_node_group_name
   kubernetes_version       = var.kubernetes_version
 
   # Azure Vnet configuration

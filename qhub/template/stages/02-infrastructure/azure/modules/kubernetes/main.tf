@@ -8,7 +8,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   dns_prefix = "Qhub" # required
 
   # Azure requires that a new, non-existent Resource Group is used, as otherwise the provisioning of the Kubernetes Service will fail.
-  node_resource_group = var.node_resource_group_name
+  node_resource_group = var.resource_node_group_name
 
   kubernetes_version = var.kubernetes_version
   default_node_pool {
