@@ -92,13 +92,14 @@ def download_terraform_binary(version=constants.TERRAFORM_VERSION):
     }
 
     architecture_mapping = {
+        "AMD64": "amd64",
         "x86_64": "amd64",
         "i386": "386",
         "armv7l": "arm",
         "aarch64": "arm64",
     }
 
-    download_url = f"https://releases.hashicorp.com/terraform/{version}/terraform_{version}_{os_mapping[sys.platform]}_{architecture_mapping[platform.machine()].lower()}.zip"
+    download_url = f"https://releases.hashicorp.com/terraform/{version}/terraform_{version}_{os_mapping[sys.platform]}_{architecture_mapping[platform.machine()]}.zip"
     filename_directory = os.path.join(tempfile.gettempdir(), "terraform", version)
     terraform_binary_extension = (
         "terraform" if os_mapping[sys.platform] != "windows" else "terraform.exe"
