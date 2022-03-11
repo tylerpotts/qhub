@@ -78,13 +78,22 @@ def run_subprocess_cmd(processargs, **kwargs):
 
     strip_errors = kwargs.pop("strip_errors", False)
 
-    process = subprocess.Popen(
-        processargs,
-        **kwargs,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        preexec_fn=os.setsid,
-    )
+    if sys.platform == "win32":
+        process = subprocess.Popen(
+            processargs,
+            **kwargs,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+    else:
+        process = subprocess.Popen(
+            processargs,
+            **kwargs,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            preexec_fn=os.setsid,
+        )
     # Set timeout thread
     timeout_timer = None
     if timeout > 0:
