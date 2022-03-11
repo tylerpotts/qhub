@@ -62,6 +62,11 @@ class AzureVnet(Base):
     vnet_resource_group: typing.Optional[str]
 
 
+class AzureOverview(Base):
+    network: typing.Optional[AzureVnet]
+    # role_based_access_control: typing.Optional[RBAC]
+
+
 # ============== CI/CD =============
 
 
@@ -262,8 +267,7 @@ class AzureProvider(Base):
     kubernetes_version: str
     node_groups: typing.Dict[str, NodeGroup]
     storage_account_postfix: str
-    vnet: typing.Optional[AzureVnet]
-    # role_based_access_control: typing.Optional[RBAC]
+    overview: typing.Optional[AzureOverview]
     tags: typing.Optional[typing.Dict[str, str]]
 
 

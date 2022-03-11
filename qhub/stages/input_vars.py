@@ -80,20 +80,33 @@ def stage_02_infrastructure(stage_outputs, config):
             "kubeconfig_filename": os.path.join(
                 tempfile.gettempdir(), "QHUB_KUBECONFIG"
             ),
-            "resource_group_name": f'{config["project_name"]}-{config["namespace"]}',
-            "node_resource_group_name": f'{config["project_name"]}-{config["namespace"]}-node-resource-group',
+            "resource_group_name": config["azure"]
+            .get("overview", {})
+            .get(
+                "resource_group_name", f'{config["project_name"]}-{config["namespace"]}'
+            ),
+            "resource_node_group_name": config["azure"]
+            .get("overview", {})
+            .get(
+                "resource_node_group_name",
+                f'{config["project_name"]}-{config["namespace"]}-node-resource-group',
+            ),
             # Azure Vnet configuration
             "enable_existing_vnet": config["azure"]
-            .get("vnet", {})
+            .get("overview", {})
+            .get("network", {})
             .get("enable_existing_vnet", False),
             "vnet_name": config["azure"]
-            .get("vnet", {})
+            .get("overview", {})
+            .get("network", {})
             .get("vnet_name", "vnet-qhubapp-0001"),
             "subnet_name": config["azure"]
-            .get("vnet", {})
+            .get("overview", {})
+            .get("network", {})
             .get("subnet_name", "subnet-qhubapp-0001"),
             "vnet_resource_group": config["azure"]
-            .get("vnet", {})
+            .get("overview", {})
+            .get("network", {})
             .get("vnet_resource_group", "sg-vnet-qhubapp"),
         }
     elif config["provider"] == "aws":

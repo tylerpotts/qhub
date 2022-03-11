@@ -38,7 +38,7 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "node_resource_group_name" {
+variable "resource_node_group_name" {
   description = "The name of the Resource Group where the Kubernetes Nodes should exist"
   type        = string
 }
