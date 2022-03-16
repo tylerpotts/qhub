@@ -2,14 +2,25 @@ provider "azurerm" {
   features {}
 }
 
+resource "azurerm_resource_group" "resource_group" {
+  name     = var.resource_group_name
+  location = var.region
+}
 
 module "registry" {
   source              = "./modules/azure/registry"
-  name                = "{{ cookiecutter.project_name }}{{ cookiecutter.namespace }}"
+  name                = var.qhub_registry_name
   location            = "{{ cookiecutter.azure.region }}"
-  resource_group_name = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}"
-}
+  resource_group_name = azurerm_resource_group.resource_group.name
 
+{% if cookiecutter.azure.tags is defined %}
+  tags = {
+{% for name, value in cookiecutter.azure.tags.items() %}
+    "{{ name }}" = "{{ value }}",
+{% endfor %}
+  }
+{% endif %}
+}
 
 module "kubernetes" {
   source = "./modules/azure/kubernetes"
@@ -17,8 +28,8 @@ module "kubernetes" {
   name                     = local.cluster_name
   environment              = var.environment
   location                 = var.region
-  resource_group_name      = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}"
-  node_resource_group_name = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}-node-resource-group"
+  resource_group_name      = azurerm_resource_group.resource_group.name
+  node_resource_group_name = var.resource_node_group_name
   kubernetes_version       = "{{ cookiecutter.azure.kubernetes_version }}"
 
   node_groups = [
@@ -32,4 +43,13 @@ module "kubernetes" {
     },
 {% endfor %}
   ]
+
+{% if cookiecutter.azure.tags is defined %}
+  tags = {
+{% for name, value in cookiecutter.azure.tags.items() %}
+    "{{ name }}" = "{{ value }}",
+{% endfor %}
+  }
+{% endif %}
+
 }

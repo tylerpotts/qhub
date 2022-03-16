@@ -164,6 +164,19 @@ module "kubernetes-ingress" {
 
   node-group = local.node_groups.general
 
+{% if cookiecutter.load_balancer is defined %}
+{%- if cookiecutter.load_balancer.ip_address is defined %}
+  load-balancer-ip = "{{ cookiecutter.load_balancer.ip_address }}"
+{% endif %}
+{%- if cookiecutter.load_balancer.annotations is defined %}
+  load-balancer-annotations = {
+{%- for key, value in cookiecutter.load_balancer.annotations.items() %}
+    "{{ "%s" | format(key) }}" = "{{ value }}"
+{% endfor -%}
+  }
+{% endif -%}
+{% endif -%}
+
 {% if cookiecutter.certificate.type == "lets-encrypt" %}
   enable-certificates = true
   acme-email          = "{{ cookiecutter.certificate.acme_email }}"

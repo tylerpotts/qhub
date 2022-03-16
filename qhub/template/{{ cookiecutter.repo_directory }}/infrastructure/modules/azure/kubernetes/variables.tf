@@ -34,3 +34,9 @@ variable "node_groups" {
   description = "Node pools to add to Azure Kubernetes Cluster"
   type        = list(map(any))
 }
+
+variable "tags" {
+  description = "A mapping of tags which should be assigned to the Resource Group"
+  type        = map(any)
+  default     = {}
+}

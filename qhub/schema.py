@@ -1,5 +1,6 @@
 import enum
 import typing
+import ipaddress
 from abc import ABC
 
 import pydantic
@@ -45,6 +46,22 @@ class Base(pydantic.BaseModel):
 
     class Config:
         extra = "forbid"
+
+
+class LoadBalancer(Base):
+    annotations: typing.Optional[typing.Dict[str, str]]
+    ip_address: typing.Optional[ipaddress.IPv4Address]
+
+
+class RBAC(Base):
+    enabled: bool = False
+    azure_active_directory: typing.Optional[typing.Dict[typing.Any, typing.Any]]
+
+
+class AzureOverview(Base):
+    resource_group_name: typing.Optional[str]
+    resource_node_group_name: typing.Optional[str]
+    registry_name: typing.Optional[str]
 
 
 # ============== CI/CD =============
@@ -263,6 +280,8 @@ class AzureProvider(Base):
     kubernetes_version: str
     node_groups: typing.Dict[str, NodeGroup]
     storage_account_postfix: str
+    overview: typing.Optional[AzureOverview]
+    tags: typing.Optional[typing.Dict[str, str]]
 
 
 class AmazonWebServicesProvider(Base):
@@ -406,6 +425,7 @@ class Main(Base):
     certificate: Certificate
     prefect: typing.Optional[Prefect]
     cdsdashboards: CDSDashboards
+    load_balancer: typing.Optional[LoadBalancer]
     security: Security
     external_container_reg: typing.Optional[ExtContainerReg]
     default_images: DefaultImages

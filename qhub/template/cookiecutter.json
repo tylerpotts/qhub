@@ -25,6 +25,10 @@
         "image": null,
         "overrides": null
     },
+    "load_balancer": {
+        "ip_adress": null,
+        "annotations": null
+    },
     "security": null,
     "default_images": null,
     "profiles": null,
@@ -123,7 +127,13 @@
                 "min_nodes": null,
                 "max_nodes": null
             }
-        }
+        },
+        "overview" : {
+            "resource_group_name": null,
+            "resource_node_group_name": null,
+            "registry_name": null
+        },
+        "tags": {}
     },
 
     "amazon_web_services": {

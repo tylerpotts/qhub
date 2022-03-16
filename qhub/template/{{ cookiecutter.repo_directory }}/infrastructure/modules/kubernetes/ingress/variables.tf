@@ -52,3 +52,15 @@ variable "acme-server" {
   #  - production: https://acme-v02.api.letsencrypt.org/directory
   default = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
+
+variable "load-balancer-ip" {
+  description = "Fixed load balancer IP Address"
+  type        = string
+  default     = null
+}
+
+variable "load-balancer-annotations" {
+  description = "Annotations to apply to load balancer"
+  type        = map(string)
+  default     = {}
+}

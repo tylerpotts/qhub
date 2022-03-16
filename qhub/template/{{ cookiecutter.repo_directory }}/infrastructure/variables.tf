@@ -121,3 +121,39 @@ variable "prefect_token" {
   type = string
 }
 {%- endif %}
+
+variable "tags" {
+  description = "A mapping of tags which should be assigned to the Resource Group"
+  type        = map(any)
+  default     = {}
+}
+
+variable "resource_group_name" {
+  description = "name of qhub resource group"
+  type        = string
+{% if cookiecutter.azure.overview.resource_group_name is defined %}
+  default     = "{{ cookiecutter.azure.overview.resource_group_name }}"
+{% else %}
+  default     = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}"
+{% endif %}
+}
+
+variable "resource_node_group_name" {
+  description = "name of new resource group for AKS nodes"
+  type        = string
+{% if cookiecutter.azure.overview.resource_node_group_name is defined %}
+  default     = "{{ cookiecutter.azure.overview.resource_node_group_name }}"
+{% else %}
+  default     = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}-node-resource-group"
+{% endif %}
+}
+
+variable "qhub_registry_name" {
+  description = "Name of QHub registry"
+  type        = string
+{% if cookiecutter.azure.overview.registry_name is defined %}
+  default     = "{{ cookiecutter.azure.overview.registry_name }}"
+{% else %}
+  default     = "{{ cookiecutter.project_name }}{{ cookiecutter.namespace }}"
+{% endif %}
+}

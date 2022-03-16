@@ -69,12 +69,17 @@ def run_subprocess_cmd(processargs, **kwargs):
         preexec_fn=os.setsid,
     )
     # Set timeout thread
+    timeout_timer = None
     if timeout > 0:
 
         def kill_process():
-            os.killpg(process.pid, signal.SIGTERM)
+            try:
+                os.killpg(process.pid, signal.SIGTERM)
+            except ProcessLookupError:
+                pass  # Already finished
 
-        threading.Timer(timeout, kill_process).start()
+        timeout_timer = threading.Timer(timeout, kill_process)
+        timeout_timer.start()
 
     for line in iter(lambda: process.stdout.readline(), b""):
         full_line = line_prefix + line
