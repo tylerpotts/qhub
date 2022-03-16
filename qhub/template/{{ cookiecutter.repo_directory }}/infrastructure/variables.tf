@@ -46,7 +46,7 @@ variable "region" {
 variable "storage_account_name" {
   description = "azure storage account name"
   type        = string
-  default     = {{ replace "{{ cookiecutter.project_name }}{{ cookiecutter.namespace }}{{ cookiecutter.azure.storage_account_postfix }}" "-" "" }}
+  default     = {{ replace "{{ cookiecutter.project_name }}{{ cookiecutter.namespace }}{{ cookiecutter.azure.storage_account_postfix }} " "-" "" }}
 }
 
 {% elif cookiecutter.provider == "do" %}
