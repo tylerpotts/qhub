@@ -1,6 +1,8 @@
 resource "azurerm_resource_group" "terraform-resource-group" {
   name     = var.resource_group_name
   location = var.location
+
+  tags = var.tags
 }
 
 resource "azurerm_storage_account" "terraform-storage-account" {
@@ -13,6 +15,8 @@ resource "azurerm_storage_account" "terraform-storage-account" {
   identity {
     type = "SystemAssigned"
   }
+
+  tags = var.tags
 }
 
 resource "azurerm_storage_container" "storage_container" {

@@ -37,6 +37,15 @@ module "terraform-state" {
   resource_group_name     = "{{ cookiecutter.project_name }}-{{ cookiecutter.namespace }}"
   location                = "{{ cookiecutter.azure.region }}"
   storage_account_postfix = "{{ cookiecutter.azure.storage_account_postfix }}"
+
+{% if cookiecutter.azure.tags is defined %}
+  tags = {
+{% for name, value in cookiecutter.azure.tags.items() %}
+    "{{ name }}" = "{{ value }}",
+{% endfor %}
+  }
+{% endif %}
+
 }
 {% elif cookiecutter.provider == "do" -%}
 module "terraform-state" {
