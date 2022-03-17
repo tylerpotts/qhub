@@ -27,7 +27,7 @@
     },
     "load_balancer": {
         "ip_address": null,
-        "annotations": null
+        "annotations": {}
     },
     "security": null,
     "default_images": null,
