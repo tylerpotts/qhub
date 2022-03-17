@@ -26,7 +26,7 @@
         "overrides": null
     },
     "load_balancer": {
-        "ip_address": null,
+        "ip_address": "",
         "annotations": {}
     },
     "security": null,
