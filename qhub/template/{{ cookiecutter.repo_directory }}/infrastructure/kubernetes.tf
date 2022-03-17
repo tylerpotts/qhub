@@ -168,7 +168,7 @@ module "kubernetes-ingress" {
   load-balancer-ip = "{{ cookiecutter.load_balancer.ip_address }}"
 {% endif %}
 
-{%- if cookiecutter.load_balancer.annotations is defined %}
+{%- if cookiecutter.load_balancer.annotations != "None" %}
   load-balancer-annotations = {
 {%- for key, value in cookiecutter.load_balancer.annotations.items() %}
     "{{ "%s" | format(key) }}" = "{{ value }}"
