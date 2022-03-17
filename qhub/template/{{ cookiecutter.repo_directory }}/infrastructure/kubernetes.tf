@@ -169,7 +169,7 @@ module "kubernetes-ingress" {
 {% endif %}
 
 {%- if cookiecutter.load_balancer is defined %}
-{% if cookiecutter.load_balancer.annotations is not empty %}
+{% if cookiecutter.load_balancer.annotations != {} %}
   load-balancer-annotations = {
 {%- for key, value in cookiecutter.load_balancer.annotations.items() %}
     "{{ "%s" | format(key) }}" = "{{ value }}"
