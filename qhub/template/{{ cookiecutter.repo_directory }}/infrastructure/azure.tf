@@ -5,6 +5,14 @@ provider "azurerm" {
 resource "azurerm_resource_group" "resource_group" {
   name     = var.resource_group_name
   location = var.region
+
+{% if cookiecutter.azure.tags is defined %}
+  tags = {
+{% for name, value in cookiecutter.azure.tags.items() %}
+    "{{ name }}" = "{{ value }}",
+{% endfor %}
+  }
+{% endif %}
 }
 
 module "registry" {
