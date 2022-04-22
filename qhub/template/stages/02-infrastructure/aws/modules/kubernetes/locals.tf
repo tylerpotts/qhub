@@ -10,5 +10,3 @@ locals {
     aws_iam_policy.worker_autoscaling.arn
   ], var.node_group_additional_policies)
 
-  gpu_node_group_names = [for node_group in var.node_groups : node_group.name if node_group.gpu == true]
-}

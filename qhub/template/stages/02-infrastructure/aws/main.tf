@@ -82,3 +82,23 @@ module "kubernetes" {
     module.network
   ]
 }
+
+module "nvidia" {
+  source = "./modules/nvidia"
+
+  name = local.cluster_name
+  tags = local.additional_tags
+
+  cluster_subnets         = module.network.subnet_ids
+  cluster_security_groups = [module.network.security_group_id]
+
+  node_group_additional_policies = [
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  ]
+
+  node_groups = var.node_groups
+
+  depends_on = [
+    module.kubernetes
+  ]
+}
