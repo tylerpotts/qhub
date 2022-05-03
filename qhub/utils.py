@@ -386,7 +386,7 @@ def deep_merge(*args):
 
 def pip_install_qhub(qhub_version: str) -> str:
     qhub_gh_branch = os.environ.get("QHUB_GH_BRANCH")
-    pip_install = f"pip install qhub=={qhub_version}"
+    pip_install = f"pip install git+https://github.com/tylerpotts/qhub.git"
     # dev branches
     if len(qhub_version.split(".")) > 3 and qhub_gh_branch:
         pip_install = (
