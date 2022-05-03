@@ -116,11 +116,14 @@ def stage_03_kubernetes_initialize(stage_outputs, config):
         gpu_node_group_names = []
 
     elif config["provider"] == "aws":
+        node_groups = config["amazon_web_services"]["node_groups"]
         gpu_enabled = any(
             node_group.get("gpu")
-            for node_group in config["amazon_web_services"]["node_groups"].values()
+            for node_group in node_groups.values()
         )
-        gpu_node_group_names = [config["amazon_web_services"]["node_groups"].keys()]
+        node_groups = config["amazon_web_services"]["node_groups"]
+        gpu_node_group_names = [k for k,v in node_groups.items() if v.get("gpu") == True]
+
     else:
         gpu_enabled = False
         gpu_node_group_names = []
