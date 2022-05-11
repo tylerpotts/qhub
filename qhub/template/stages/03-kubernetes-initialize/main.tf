@@ -29,3 +29,7 @@ module "nvidia-driver-installer" {
   gpu_enabled = var.gpu_enabled
   gpu_node_group_names = var.gpu_node_group_names
 }
+
+module "efs-policy" {
+  source = "./modules/efs"
+}
