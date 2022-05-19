@@ -1,8 +1,8 @@
 # remove after next kubespawner release past 1/20/2022
 # https://github.com/jupyterhub/kubespawner/pull/558
-import kubernetes.client.models
+import kubernetes_asyncio.client.models
 
-kubernetes.client.models.V1EndpointPort = kubernetes.client.models.CoreV1EndpointPort
+kubernetes_asyncio.client.models.V1EndpointPort = kubernetes_asyncio.client.models.CoreV1EndpointPort
 from kubespawner import KubeSpawner
 
 import z2jh

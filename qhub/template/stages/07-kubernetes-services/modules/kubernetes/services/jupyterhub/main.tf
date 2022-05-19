@@ -15,9 +15,9 @@ resource "helm_release" "jupyterhub" {
   name      = "jupyterhub"
   namespace = var.namespace
 
-  repository = "https://jupyterhub.github.io/helm-chart/"
-  chart      = "jupyterhub"
-  version    = "1.2.0"
+  # repository = "https://jupyterhub.github.io/helm-chart/"
+  chart      = "https://github.com/MSS-AI/custom_jupyterhub_helm/archive/refs/tags/0.0.1.tar.gz"
+  # version    = "1.2.0"
 
   values = concat([
     file("${path.module}/values.yaml"),
@@ -73,7 +73,7 @@ resource "helm_release" "jupyterhub" {
         }
 
         extraConfig = {
-          "01-theme.py"       = file("${path.module}/files/jupyterhub/01-theme.py")
+          # "01-theme.py"       = file("${path.module}/files/jupyterhub/01-theme.py")
           "02-spawner.py"     = file("${path.module}/files/jupyterhub/02-spawner.py")
           "03-profiles.py"    = file("${path.module}/files/jupyterhub/03-profiles.py")
         }
